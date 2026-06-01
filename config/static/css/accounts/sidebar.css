@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+
+/* ===== Layout ===== */
+.account-layout {
+    display: flex;
+    height: 100%;
+    background: #ffffff;
+}
+
+
+.account-sidebar {
+    width: 240px;
+    background: #ffffff;
+    color: #111;
+    padding-top: 32px;
+    position: fixed;
+    height:calc(100vh - 35px);
+    top: 35px;
+    left: 0;
+    overflow-y: auto;
+
+}
+
+/* Menu */
+.account-sidebar .sidebar-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.account-sidebar .menu-item {
+    margin: 0;
+}
+
+/* Links */
+.account-sidebar .menu-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    margin: 2px 12px;
+    color: #111;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background 0.15s ease;
+}
+
+/* Hover */
+.account-sidebar .menu-link:hover {
+    background: #f2f2f2;
+}
+
+/* Active */
+.account-sidebar .menu-link.active {
+    background: #eeeeee;
+    font-weight: 600;
+}
+
+/* Icon */
+.account-sidebar .menu-link .icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* ===== Main Content ===== */
+.account-content {
+    flex: 1;
+    margin-left: 240px;
+    padding: 40px;
+    background: #ffffff;
+}

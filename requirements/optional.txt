@@ -1,0 +1,26 @@
+# ============================================================================
+# OPTIONAL DEPENDENCIES - Feature Flags
+# ============================================================================
+# These are NOT required for basic functionality but enable specific features
+# Example: pip install -r base.txt -r optional-monitoring.txt
+# ============================================================================
+
+# Monitoring & Analytics (if using monitoring)
+# -r base.txt
+# sentry-sdk>=1.25,<2.0
+# statsd>=3.3,<4.0
+# prometheus-client>=0.16,<1.0
+
+# APM (Application Performance Monitoring)
+# elastic-apm>=6.12,<7.0
+
+# Search Engine (if implementing full-text search)
+# elasticsearch>=8.0,<9.0
+# django-haystack>=3.1,<4.0
+
+# Caching Layer Extras
+# django-cachalot>=2.6,<3.0
+
+# API Documentation
+# drf-spectacular>=0.26,<1.0
+# drf-spectacular-sidecar>=0.26,<1.0

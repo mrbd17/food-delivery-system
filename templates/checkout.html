@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Di Da Shoping</title>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/spinner.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/toast.css' %}">
+</head>
+<body>
+
+<h4>secure checkout</h4>
+
+<div>
+  <h1>Cart</h1>
+  <div id="cart-items"></div>
+</div>
+
+<div>
+  <h1>Addresses</h1>
+  <div id="list-addresses"></div>
+</div>
+
+<div class="address-modal hidden" id="address-modal" role="dialog">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <h2>Add New Address</h2>
+      <div id="close-modal"></div>
+    </div>
+
+    <div id="modal-error" class="error"></div>
+
+    <form id="modal-form">
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input name="full_name" placeholder="Full Name" required/>
+      </div>
+
+      <div class="form-group">
+        <label>Label</label>
+        <select name="label">
+          <option value="Home">Home</option>
+          <option value="Work">Work</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Country</label>
+        <select name="country" id="country" placeholder="Egpyt" required></select>
+      </div>
+
+      <div calss="form-group">
+        <label>State</label>
+        <input name="state" placeholder="State" required/>
+      </div>
+
+      <div class="form-group">
+        <label>City</label>
+        <input name="city" placeholder="City" required/>
+      </div>
+
+      <div class="form-group">
+        <label>Street</label>
+        <input name="street" placeholder="Street" required/>
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" name="phone" placeholder="e.g. 1*******" required/>
+      </div>
+
+      <div class="form-group">
+        <label>Post code</label>
+        <input name="postcode" placeholder="post code" required/>
+      </div>
+
+      <label class="form-group">
+        <input type="checkbox" id="is_default"/>
+        Set as default
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" id="cancel">Cancel</button>
+        <button type="submit" id="save">
+          Save Address
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<div>
+  <button id="place-order">place order</button>
+</div>
+
+<script type="module" src="{% static 'js/checkout/checkout.js'%}"></script>
+<script type="module" src="{% static 'js/vendor/axios.min.js' %}"></script>
+<script type="module" src="{% static 'js/app/app.js'%}"></script>
+
+</body>
+</html>

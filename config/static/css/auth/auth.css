@@ -1,0 +1,309 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.forgot-password {
+    width: 100%;
+    text-align:center;
+    margin: 10px 0;
+}
+
+.forgot-password a {
+    color: #555;
+    font-size:13px;
+    text-decoration:none
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+.name-fields {
+    display:flex;
+    gap:12px;
+}
+
+.name-fields input {
+    flex: 1;
+}
+
+
+.alert {
+    padding:12px 18px;
+    margin-bottom:15px;
+    border-radius:6px;
+    font-size:14px;
+    text-align:center;
+    animation: fadeIn 0.4s ease;
+}
+
+.alert-success {
+    background:#d4edda;
+    color:#155724;
+    border: 1px solid #c3e6cb
+}
+
+
+.alert-error {
+    background:#f8d7da;
+    color:#721c24;
+    border: 1px solid #f5c6cb
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Container */
+.container {
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Form Containers */
+.form-container {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.8s ease-in-out;
+    margin-top:40px;
+}
+
+form h1 {
+    margin-bottom: 25px;
+}
+
+
+/* Sign In */
+.sign-in-container {
+    left: 0;
+    z-index: 2; /* Sign In فوق Overlay */
+}
+
+/* Sign Up */
+.sign-up-container {
+    left: 0;
+    opacity: 0;
+    z-index: 2; /* مثل Sign In افتراضياً */
+}
+
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    text-align: center;
+}
+
+input {
+    margin: 8px 0;
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button.btn {
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    background: #e74c3c;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button.btn:hover {
+    background: #c0392b;
+}
+.google-login-btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.google-login-btn:hover {
+    background: #f5f5f5;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.google-login-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+
+/* Google button يظهر فقط عند Sign Up */
+#googleSignUp {
+    background: #4285F4;
+    margin-top: 20px;
+    width: 70%;
+    border-radius: 5px;
+    display: none;
+}
+
+#googleSignUp:hover {
+    background: #357ae8;
+}
+
+button.ghost {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 12px 30px;
+    cursor: pointer;
+}
+
+/* Overlay */
+.overlay-container {
+    position: absolute;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.8s ease-in-out;
+    z-index: 1; /* دائماً خلف الفورم */
+}
+
+.overlay {
+    background: #c0392b; /* أحمر هادي */
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    display: flex;
+    transition: transform 0.8s ease-in-out;
+}
+
+.overlay-panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+/* Active State */
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%) translateY(-10%);
+    opacity: 0;
+    z-index:2; /* ثابت */
+}
+
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%) translateY(-10%);
+    opacity: 1;
+    z-index:3; /* أعلى Sign In عند ظهور Sign Up */
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%) translateY(0%);
+}
+
+
+
+/* ===== Input Wrapper ===== */
+.input-field {
+    position: relative;
+    width: 100%;
+}
+
+/* ===== Input ===== */
+.input-field input {
+    width: 100%;
+    padding: 14px 44px 14px 14px; /* مساحة للعين */
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+/* ===== Toggle Button ===== */
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== SVG ===== */
+.eye-icon {
+    width: 20px;
+    height: 20px;
+    stroke: #6b6b6b;
+    stroke-width: 1.8;
+    fill: none;
+    transition: stroke 0.15s ease;
+}
+
+/* hidden */
+.eye-off {
+    display: none;
+}
+
+/* hover */
+.toggle-password:hover .eye-icon {
+    stroke: #000;
+}
+
+/* focus */
+.toggle-password:focus-visible {
+    outline: none;
+}
+
+
+@media (max-width: 600px) {
+    .name-fields {
+        flex-direction:column;
+    }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OTP Verification</title>
+<link rel="stylesheet" href="{% static "css/auth/otp.css" %}">
+</head>
+
+<body>
+
+<div class="otp-container">
+
+    <h2>Verify Code</h2>
+    <p>Enter the 6-digit code sent to your email</p>
+
+    <form method="POST" id="otpForm">
+        {% csrf_token %}
+
+        <div class="otp-inputs">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+        </div>
+
+        <div class="otp-error"></div>
+
+        <button type="submit" class="verify-btn">
+            Verify
+            <span class="loader"></span>
+        </button>
+
+    </form>
+
+    <button id="resendBtn" class="resend-btn">
+        <p>Didn't receive the code?</p>
+        <a href="{% url "resend-otp"  %}" >
+            Resend (60s)
+        </a>
+    </button>
+
+</div>
+
+<script src="{% static "js/auth/otp.js" %}"></script>
+</body>
+</html>

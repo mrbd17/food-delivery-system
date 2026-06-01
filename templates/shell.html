@@ -1,0 +1,67 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Di-Da Account</title>
+
+    <link rel="stylesheet" href="{% static 'css/views/avatar-overlay.css' %}">
+    <link rel="stylesheet" href="{% static 'css/views/overview.css' %}">
+    <link rel="stylesheet" href="{% static 'css/views/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/views/personal/personal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/views/personal/name.css' %}">
+    <link rel="stylesheet" href="{% static 'css/views/personal/email.css' %}">
+</head>
+
+<body>
+
+    <!-- ممكن تضيف focus-layout هنا لما تحتاج -->
+    <div class="account-layout" id="layout">
+
+        <!-- Navbar -->
+        <header class="account-navbar">
+            <div class="account-title">Di-Da Account</div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="account-sidebar">
+
+            <ul class="sidebar-menu">
+
+                <li class="menu-item">
+                    <a class="menu-link active" data-section="overview">
+                        Overview
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a class="menu-link" data-section="personal">
+                        Personal Info
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a class="menu-link" data-section="security">
+                        Security
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+        <!-- Content -->
+        <main class="account-content" id="accountContent">
+            <div class="loading">Loading...</div>
+        </main>
+
+    </div>
+
+    <script type="module" src="{% static 'js/vendor/axios.min.js' %}"></script>
+    <script type="module" src="{% static 'js/app/app.js' %}"></script>
+
+</body>
+</html>

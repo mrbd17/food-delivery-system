@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Menu|Di-Da{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/restaurant/menu.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="categories">
+  <button class="category-btn active" data-category="all">Full Menu</button>
+  <button class="category-btn" data-category="main">Main Meals</button>
+  <button class="category-btn" data-category="drinks">Drinks</button>
+  <button class="category-btn" data-category="desserts">Desserts</button>
+  <button class="category-btn" data-category="salads">Salads</button>
+  <button class="category-btn" data-category="snacks">Sides</button>
+</section>
+
+<section id="menu" class="menu"></section>
+{% endblock content %}
+
+{% block extra_js %}
+<script type="module" src="{% static 'js/restaurant/menu.js' %}"></script>
+{% endblock %}

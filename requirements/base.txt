@@ -1,0 +1,55 @@
+# ============================================================================
+# PRODUCTION BASE REQUIREMENTS (FoodDeliverySystem)
+# ============================================================================
+# This file contains DIRECT dependencies only.
+# DO NOT pin exact versions here - use ranges like ">=4.1,<5.0"
+# Run: pip-compile base.txt --output-file=base-pinned.txt
+# ============================================================================
+
+# Core Framework & ORM
+Django>=4.1,<5.0
+djangorestframework>=3.14,<4.0
+django-environ>=0.9,<1.0
+python-decouple>=3.6,<4.0
+
+# Real-time & WebSockets (Channels Stack)
+channels>=3.0,<4.0
+daphne>=3.0,<4.0
+channels-redis>=4.0,<5.0
+
+# Task Queue & Async Jobs
+celery>=5.2,<6.0
+redis>=4.0,<5.0
+
+# Database & Connection Pooling
+psycopg2-binary>=2.9,<3.0
+django-db-geventpool>=4.0,<5.0
+
+# Authentication & Social OAuth
+django-allauth>=0.50,<1.0
+PyJWT>=2.6,<3.0
+cryptography>=3.4,<42.0
+
+# API Enhancements
+django-cors-headers>=3.13,<4.0
+django-countries>=7.5,<8.0
+djangorestframework-simplejwt>=5.2,<6.0
+
+# Admin & Extensions
+django-extensions>=3.2,<4.0
+
+# Monitoring & Debugging (Optional - can move to optional)
+django-silk>=5.0,<6.0
+
+# Image Processing
+Pillow>=9.0,<11.0
+
+# Environment & Config
+python-dotenv>=0.20,<1.0
+
+# Production Server
+gunicorn>=20.1,<22.0
+
+# Utilities
+python-dateutil>=2.8,<3.0
+requests>=2.28,<3.0

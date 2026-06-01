@@ -1,0 +1,19 @@
+# ============================================================================
+# CI/CD & PRODUCTION BUILD REQUIREMENTS
+# ============================================================================
+# Minimal set for Docker builds and CI pipelines
+# Does NOT include development tools
+# ============================================================================
+
+-r base.txt
+
+# For running tests in CI only
+pytest>=7.3,<8.0
+pytest-django>=4.5,<5.0
+
+# Security scanning in CI
+pip-audit>=2.4,<3.0
+safety>=2.3,<3.0
+
+# Coverage reporting
+coverage>=7.0,<8.0

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home|jDi-Da</title>
+<link rel="stylesheet" href="{%static "css/global/home.css" %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+
+
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-box">
+    <h1>Delicious Food Delivered To You</h1>
+    <p>Fast. Fresh. Tasty.</p>
+    <button ><a href="{% url 'menu' %}" >Order Now</a></button>
+  </div>
+</section>
+<div class="hero-picture">
+  <img src="media/home_pictures/hero-picture.jpg" alt="Delicious Hero Meal">
+</div>
+
+<!-- 4 FEATURE IMAGES -->
+<section class="features">
+  <div class="feature-card">
+    <img src="media/home_pictures/pizza.jpg" alt="Delicious Pizza">
+  </div>
+  <div class="feature-card">
+    <img src="media/home_pictures/juice.jpg" alt="Fresh Juice">
+  </div>
+  <div class="feature-card">
+    <img src="media/home_pictures/ice_cream.jpg" alt="Tasty Ice Cream">
+  </div>
+  <div class="feature-card">
+    <img src="media/home_pictures/family-meals.jpg" alt="Family Meal Combo">
+  </div>
+</section>
+    
+
+
+</body>
+{% endblock %}
