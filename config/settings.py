@@ -33,7 +33,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost', cast=lambda v: [s.strip() for s in v.split(',')])
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND ")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 
 
 # Application definition
@@ -155,7 +155,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    'DEFUALT_THROTTLE_CLASSES':
+    'DEFAULT_THROTTLE_CLASSES':
     ['rest_framework.throttling.AnonRateThrottle', 'rest_framework.throttling.UserRateThrottle'],
     'DEFAULT_THROTTLE_RATES':
     {'anon': "2/minute", 'user':'4/minute'}
@@ -209,8 +209,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",  # login Ø¹Ø§Ø¯ÙŠ
-    "allauth.account.auth_backends.AuthenticationBackend",  # login Ø¹Ø¨Ø± Allauth
+    "django.contrib.auth.backends.ModelBackend", 
+    "allauth.account.auth_backends.AuthenticationBackend", 
 ]
 
 SITE_ID = 1
