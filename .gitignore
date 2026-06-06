@@ -37,6 +37,7 @@ MANIFEST
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+staticfiles/
 /media
 /static
 .DS_Store
@@ -84,4 +85,5 @@ node_modules/
 package-lock.json
 package.json
 my-app
+Docker_Complete_Guide_Enhanced.pdf
 

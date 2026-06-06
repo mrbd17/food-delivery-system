@@ -15,12 +15,13 @@ __pycache__
 .pytest_cache
 .mypy_cache
 
-# Environment secrets
+# Environment secrets (محلي فقط)
 .env
-.env.*
-!.env.example
+.env.*.local
+.env.development.local
+.env.test.local
 
-# Node.js (if frontend exists)
+# Node.js
 node_modules
 npm-debug.log*
 yarn-debug.log*
@@ -31,19 +32,21 @@ build
 # Testing / coverage
 coverage
 htmlcov
+.coverage
 
 # Logs
 logs
 *.log
 
-# Django / app specific
+# Documentation (محلي فقط)
+docs
+*.pdf
+*_learning.txt
+createDockerGuide.py
+
+# Django specific
 media
-staticfiles
 
 # OS files
 .DS_Store
 Thumbs.db
-
-# Docker / local artifacts
-Dockerfile
-docker-compose.yml
