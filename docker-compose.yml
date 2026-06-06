@@ -1,0 +1,106 @@
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: fooddelivery-db
+    environment:
+      POSTGRES_DB: food_delivery
+      POSTGRES_USER: MAHMOUDRABIA
+      POSTGRES_PASSWORD: PGMAHMOUD2007
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U MAHMOUDRABIA -d food_delivery"]      
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fooddelivery-network
+    
+  redis:
+    image: redis:7-alpine
+    container_name: fooddelivery-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fooddelivery-network
+    
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: fooddelivery-app  
+    command: daphne -b 0.0.0.0 -p 8000 config.asgi:application  # ✅ بدل entrypoint.sh
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.development
+      - PYTHONUNBUFFERED=1
+      - DEBUG=True
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - media_files:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - fooddelivery-network
+    
+  celery:
+    build: .
+    container_name: fooddelivery-celery
+    command: celery -A config worker -l info -P prefork -c 4
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - PYTHONUNBUFFERED=1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy  
+      db:
+        condition: service_healthy  
+    networks:
+      - fooddelivery-network
+
+  celery-beat:
+    build: .
+    container_name: fooddelivery-celery-beat
+    command: celery -A config beat -l info  
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - PYTHONUNBUFFERED=1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy 
+      db:
+        condition: service_healthy  
+    networks:
+      - fooddelivery-network
+
+volumes:
+  postgres_data:
+  media_files:
+
+networks:
+  fooddelivery-network:
+    driver: bridge
