@@ -4,9 +4,11 @@ services:
     image: postgres:15-alpine
     container_name: fooddelivery-db
     environment:
-      POSTGRES_DB: food_delivery
-      POSTGRES_USER: MAHMOUDRABIA
-      POSTGRES_PASSWORD: PGMAHMOUD2007
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -64,7 +66,7 @@ services:
     container_name: fooddelivery-celery
     command: celery -A config worker -l info -P prefork -c 4
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DJANGO_SETTINGS_MODULE=config.settings.development
       - PYTHONUNBUFFERED=1
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -83,7 +85,7 @@ services:
     container_name: fooddelivery-celery-beat
     command: celery -A config beat -l info  
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DJANGO_SETTINGS_MODULE=config.settings.development
       - PYTHONUNBUFFERED=1
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0

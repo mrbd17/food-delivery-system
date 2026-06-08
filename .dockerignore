@@ -44,8 +44,8 @@ docs
 *_learning.txt
 createDockerGuide.py
 
-# Django specific
-media
+# # Django specific
+# media
 
 # OS files
 .DS_Store
