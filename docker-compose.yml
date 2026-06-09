@@ -3,10 +3,6 @@ services:
   db:
     image: postgres:15-alpine
     container_name: fooddelivery-db
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
     env_file:
       - .env
     volumes:
@@ -14,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]      
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER -d $DB_NAME"]      
       interval: 10s
       timeout: 5s
       retries: 5
@@ -39,15 +35,11 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: fooddelivery-app  
-    command: daphne -b 0.0.0.0 -p 8000 config.asgi:application  # ✅ بدل entrypoint.sh
+    command: daphne -b 0.0.0.0 -p 8000 config.asgi:application  
     ports:
       - "8000:8000"
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.development
       - PYTHONUNBUFFERED=1
-      - DEBUG=True
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     env_file:
       - .env
     volumes:
@@ -64,12 +56,9 @@ services:
   celery:
     build: .
     container_name: fooddelivery-celery
-    command: celery -A config worker -l info -P prefork -c 4
+    command: celery -A config worker -l info -P solo -Q emails 
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.development
       - PYTHONUNBUFFERED=1
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     env_file:
       - .env
     depends_on:
@@ -85,10 +74,7 @@ services:
     container_name: fooddelivery-celery-beat
     command: celery -A config beat -l info  
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.development
       - PYTHONUNBUFFERED=1
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     env_file:
       - .env
     depends_on:
