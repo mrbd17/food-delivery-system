@@ -39,5 +39,18 @@ DATABASES["default"]["CONN_MAX_AGE"] = 600
 
 CELERY_ALWAYS_EAGER = False
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+MIDDLEWARE.insert(
+    1,
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+)
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 # LOGGING["loggers"]["django"]["level"] = "WARNING"
 # LOGGING["loggers"]["apps"]["level"] = "INFO"

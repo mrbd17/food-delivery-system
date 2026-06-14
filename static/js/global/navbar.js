@@ -1,5 +1,30 @@
 import { toggleCart, initCartUI} from "../cart/cartUI.js";
 
+import { AuthAPI } from "../auth/auth.service.js";
+const authAPI = new AuthAPI();
+
+const logoutBtn = document.getElementById("logout-btn");
+if(logoutBtn){
+  logoutBtn.addEventListener("click", handleLogout);
+  console.log("logout exists")
+}
+
+
+async function handleLogout(e) {
+    e.preventDefault();
+
+    const result = await authAPI.logout();
+
+    if (result.success) {
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 3000)
+        
+    } else {
+        console.error(result);
+        console.error("logout failed");
+    }
+}
 const cartBtn = document.querySelector(".cart-btn");
 if(cartBtn){
 cartBtn.addEventListener("click", toggleCart)
@@ -75,18 +100,19 @@ overlay.addEventListener('click', closeAll);
 
 const profileBtn = document.getElementById("profileBtn");
 const profileDropdown = document.getElementById("profileDropdown");
-
-profileBtn.addEventListener("click", (e) => {
-  e.stopPropagation(); // يمنع الغلق الفوري
-  profileDropdown.classList.toggle("show");
+if (profileBtn){
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // يمنع الغلق الفوري
+    profileDropdown.classList.toggle("show");
 });
+}
 
 document.addEventListener("click" , () => {
   profileDropdown.classList.remove("show");
 });
 
-
-profileDropdown.addEventListener("click", (e) => {
-e.stopPropagation();
-
-})
+if(profileDropdown){
+  profileDropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+  }) 
+}

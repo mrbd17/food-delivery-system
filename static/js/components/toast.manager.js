@@ -1,7 +1,7 @@
 import {on} from "../core/events.js";
 
 export default function initToastManager(){
-
+    console.log("Toast Manager Initialized");
     const container = document.createElement("div");
     container.className = "toast-container";
 

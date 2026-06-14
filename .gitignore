@@ -86,3 +86,6 @@ package.json
 my-app
 Docker_Complete_Guide_Enhanced.pdf
 
+trivy.zip
+trivy.exe
+report.json
