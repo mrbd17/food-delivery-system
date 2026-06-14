@@ -3,10 +3,13 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from .models import Profile
 from django.contrib.auth import authenticate
+import logging
+logger = logging.getLogger(__name__)
 
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
+    username = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = User
@@ -23,7 +26,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs["password1"] != attrs["password2"]:
             raise serializers.ValidationError(
-                {"password2", "passwords dosen't match"}
+                {"password2": "passwords dosen't match"}
             )
         validate_password(attrs["password1"])
 
@@ -47,15 +50,20 @@ class LoginSerializer(serializers.Serializer):
         email = attrs.get("email")
         password = attrs.get("password")
 
+        logger.info(f"Email {email}")
+        logger.info(password)
+
         user = authenticate(
-            email=email,
+            username=email,
             password=password
         )
+        
 
         if not user:
             raise serializers.ValidationError(
                 "Invalid credentials"
             )
+            
         if not user.is_active:
             raise serializers.ValidationError(
                 "Account is not activated"

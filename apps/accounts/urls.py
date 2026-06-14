@@ -11,9 +11,9 @@ urlpatterns = [
     # AUTH
     # =========================
     path("auth/", auth.auth_page, name="auth"),
-    path("register/", auth.register_view, name="register"),
-    path("login/", auth.login_view, name="login"),
-    path("logout/", auth.logoutUser, name="logout"),
+    path("register/", auth.RegisterAPIView.as_view(), name="register"),
+    path("login/", auth.LoginAPIView.as_view(), name="login"),
+    path("logout/", auth.LogoutAPIView.as_view(), name="logout"),
 
     # =========================
     # EMAIL VERIFICATION

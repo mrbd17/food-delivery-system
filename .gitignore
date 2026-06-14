@@ -39,7 +39,6 @@ db.sqlite3
 db.sqlite3-journal
 staticfiles/
 /media
-/static
 .DS_Store
 
 # IDE
@@ -87,3 +86,6 @@ package.json
 my-app
 Docker_Complete_Guide_Enhanced.pdf
 
+trivy.zip
+trivy.exe
+report.json

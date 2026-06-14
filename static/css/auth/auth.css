@@ -1,0 +1,502 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ================= CONTAINER ================= */
+
+.container {
+    position: relative;
+    width: 900px;
+    max-width: 100%;
+    height: 550px;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* ================= FORMS SECTION (50% left) ================= */
+
+.form-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* LOGIN FORM - visible by default */
+.login-container {
+    opacity: 1;
+    z-index: 5;
+    visibility: visible;
+}
+
+/* SIGNUP FORM - hidden by default */
+.sign-up-container {
+    opacity: 0;
+    z-index: 4;
+    visibility: hidden;
+}
+
+/* ANIMATION: when right-panel-active */
+.container.right-panel-active .login-container {
+    opacity: 0;
+    visibility: hidden;
+    z-index: 4;
+}
+
+.container.right-panel-active .sign-up-container {
+    opacity: 1;
+    visibility: visible;
+    z-index: 5;
+}
+
+/* ================= FORM STYLING ================= */
+
+form {
+    width: 100%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+form h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 26px;
+    color: #333;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+input {
+    padding: 13px 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    background: #fff;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+input::placeholder {
+    color: #bbb;
+}
+
+/* ================= PASSWORD WRAPPER ================= */
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+.toggle-password:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.eye-icon {
+    width: 20px;
+    height: 20px;
+    stroke: #666;
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.eye-icon.eye-on {
+    display: block;
+}
+
+.eye-icon.eye-off {
+    display: none;
+}
+
+/* ================= BUTTONS ================= */
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* SUBMIT BUTTONS */
+button[type="submit"] {
+    padding: 13px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    width: 100%;
+    margin-top: 8px;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+button[type="submit"]:active:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+/* GOOGLE BUTTON */
+.google-btn {
+    padding: 13px;
+    background: #fff;
+    color: #333;
+    border: 2px solid #e8e8e8;
+    width: 100%;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.container.right-panel-active .google-btn {
+    display: block;
+}
+
+.google-btn:hover:not(:disabled) {
+    border-color: #667eea;
+    color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+}
+
+.google-btn:before {
+    content: "🔍 ";
+}
+
+/* ================= OVERLAY (50% right) ================= */
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.overlay {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.overlay-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+.overlay-left {
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.overlay-right {
+    right: 0;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.container.right-panel-active .overlay-left {
+    opacity: 1;
+    visibility: visible;
+}
+
+.container.right-panel-active .overlay-right {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.overlay-panel h1 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.overlay-panel p {
+    font-size: 15px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+/* GHOST BUTTONS (overlay buttons) */
+.ghost-btn {
+    padding: 12px 32px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #fff;
+    width: auto;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.ghost-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ghost-btn:active {
+    transform: translateY(0);
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.login-container {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.container.right-panel-active .sign-up-container {
+    animation: slideInRight 0.5s ease-out;
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        height: auto;
+        min-height: 600px;
+        border-radius: 12px;
+    }
+
+    .form-container {
+        position: relative;
+        width: 100%;
+        left: 0;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        padding: 35px 25px;
+    }
+
+    .login-container {
+        z-index: auto;
+    }
+
+    .sign-up-container {
+        display: none;
+        z-index: auto;
+    }
+
+    .container.right-panel-active .login-container {
+        display: none;
+    }
+
+    .container.right-panel-active .sign-up-container {
+        display: block;
+        position: relative;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .overlay-container {
+        display: none;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    form h1 {
+        font-size: 22px;
+    }
+
+    input,
+    button {
+        font-size: 13px;
+        padding: 11px 13px;
+    }
+
+    .toggle-password {
+        right: 10px;
+    }
+
+    .eye-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .google-btn {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        min-height: 550px;
+    }
+
+    body {
+        padding: 10px;
+    }
+
+    .form-container {
+        padding: 30px 20px;
+    }
+
+    form {
+        gap: 12px;
+    }
+
+    form h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    input,
+    button {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .password-wrapper input {
+        padding-right: 40px;
+    }
+
+    .eye-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    button {
+        letter-spacing: 0;
+    }
+
+    button[type="submit"],
+    .google-btn {
+        margin-top: 6px;
+    }
+}
+
+/* ================= ACCESSIBILITY ================= */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ================= FOCUS VISIBLE ================= */
+
+input:focus-visible,
+button:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
