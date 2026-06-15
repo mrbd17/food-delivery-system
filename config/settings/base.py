@@ -1,13 +1,12 @@
-
 import os
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = config('SECRET_KEY')  
-DEBUG = False  
+SECRET_KEY = config('SECRET_KEY')
 
 INSTALLED_APPS = [
     "daphne",
@@ -32,7 +31,6 @@ INSTALLED_APPS = [
     "channels",
 ]
 
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -44,7 +42,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 ROOT_URLCONF = "config.urls"
 
@@ -67,21 +64,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config('DB_NAME'),
-        "USER": config('DB_USER'),
-        "PASSWORD": config('DB_PASSWORD'),
-        "HOST": config('DB_HOST'),
-        "PORT": config('DB_PORT', cast=int),
-        "CONN_MAX_AGE": 600, 
-        "OPTIONS": {
-            "connect_timeout": 10,
-            "application_name": "food_delivery",
-        }
-    }
-}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -95,7 +78,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_THROTTLE_CLASSES": [  
+    "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle"
     ],
@@ -116,15 +99,23 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_SAVE_EVERY_REQUEST = False 
+SESSION_SAVE_EVERY_REQUEST = False
 
 CELERY_BROKER_URL = config('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')  
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)],
+            "hosts": [config('REDIS_CHANNEL_HOST', default='localhost'), 
+                     int(config('REDIS_CHANNEL_PORT', default='6379'))],
             "capacity": 1500,
             "expiry": 10,
         },
@@ -133,8 +124,7 @@ CHANNEL_LAYERS = {
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -159,40 +149,38 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-        "file": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": os.path.join(BASE_DIR, "logs/app.log"),
-            "maxBytes": 1024 * 1024 * 10,  # 10MB
-            "backupCount": 5,
-            "formatter": "verbose",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-        },
-        "apps": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "verbose": {
+#             "format": "{levelname} {asctime} {module} {message}",
+#             "style": "{",
+#         },
+#     }, 
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#             "formatter": "verbose",
+#         },
+#         "file": {
+#             "class": "logging.handlers.RotatingFileHandler",
+#             "filename": os.path.join(BASE_DIR, "logs/app.log"),
+#             "maxBytes": 1024 * 1024 * 10,
+#             "backupCount": 5,
+#             "formatter": "verbose",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#         },
+#         "apps": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#         },
+#     },
+# }

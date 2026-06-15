@@ -1,7 +1,13 @@
 ~# Environment
 .env
 .env.local
+.env.docker
+.env.production
 .env.*.local
+
+!.env.local.example
+!.env.docker.example
+!.env.production.example
 
 # Python
 __pycache__/

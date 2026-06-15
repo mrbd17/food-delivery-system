@@ -17,6 +17,9 @@ __pycache__
 
 # Environment secrets (محلي فقط)
 .env
+.env.local
+.env.production
+.env.docker
 .env.*.local
 .env.development.local
 .env.test.local
