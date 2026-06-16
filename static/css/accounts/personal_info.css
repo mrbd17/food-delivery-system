@@ -1,222 +1,250 @@
-:root {
-    --space-xs: 8px;
-    --space-sm: 12px;
-    --space-md: 16px;
-    --space-lg: 24px;
-}
-
-/* ====== Wrapper (Scoped) ====== */
+/* ====== Wrapper ====== */
 .personalinfo-page {
-    max-width: 720px;
-    margin: var(--space-lg) 0 0 0;
-    padding: 0 var(--space-md);
+  max-width: 720px;
+  margin: var(--space-xl) 0 0 0;
+  padding: 0 var(--space-md);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 /* ====== Header ====== */
 .personalinfo-page .profile-header h1 {
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: var(--space-lg);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: var(--space-xl);
+  color: var(--text-primary);
 }
 
 /* ====== Profile Photo ====== */
 .personalinfo-page .profile-photo-container {
-    position: relative;
-    width: 96px;
-    height: 96px;
-    margin: var(--space-lg) 0;
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: var(--space-xl) 0;
 }
 
 .personalinfo-page .profile-photo-container img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  display: block;
+  border: 3px solid var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.personalinfo-page .profile-photo-container img:hover {
+  border-color: var(--primary);
 }
 
 /* Edit Icon */
 .personalinfo-page .photo-edit-icon {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    bottom: 5px;
-    right: 4px;
-    background: #fff;
-    border-radius: 50%;
-    padding: 6px;
-    font-size: 18px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.15);
-    opacity: 0;
-    transition: opacity .2s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 5px;
+  right: 4px;
+  background: var(--surface);
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 18px;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
 }
 
 .personalinfo-page .profile-photo-container:hover .photo-edit-icon {
-    opacity: 1;
+  opacity: 1;
+}
+
+.personalinfo-page .photo-edit-icon:hover {
+  transform: scale(1.1);
+  color: var(--primary);
 }
 
 /* ====== Modal Overlay ====== */
 .personalinfo-page .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    display: none;
-    z-index: 100;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: none;
+  z-index: 100;
 }
 
 .personalinfo-page .modal-overlay.open {
-    display: block;
+  display: block;
 }
 
 /* ====== Photo Modal ====== */
 .personalinfo-page .photo-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    background: #fff;
-    width: 100%;
-    max-width: 360px;
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -40%);
-    transition: all 0.35s ease;
-    z-index: 101;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background: var(--surface);
+  width: 100%;
+  max-width: 360px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -40%);
+  transition: all var(--transition-normal);
+  z-index: 101;
+  border: 1px solid var(--border-color);
 }
 
 .personalinfo-page .photo-modal.open {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(-50%, -50%);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
 }
 
 .personalinfo-page .photo-modal h1 {
-    font-size: 27px;
-    font-weight: 600;
-    margin-bottom: var(--space-xs);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
 }
 
 .personalinfo-page .photo-modal p {
-    font-size: 16px;
-    line-height: 24px;
-    color: #111;
-    margin: 0 0 var(--space-md) 0;
-    padding: 0 8px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-md) 0;
+  padding: 0 var(--space-xs);
 }
 
 /* ====== Buttons ====== */
 .personalinfo-page #updatePhotoBtn {
-    width: 100%;
-    background: #000;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 14px 0;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .2s ease, transform .05s ease;
+  width: 100%;
+  background: var(--primary);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
 }
 
 .personalinfo-page #updatePhotoBtn:hover {
-    background: #222;
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .personalinfo-page #updatePhotoBtn:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .personalinfo-page #cancelPhotoBtn {
-    width: 100%;
-    background: transparent;
-    color: #000;
-    padding: 14px 0;
-    font-size: 14px;
-    font-weight: 400;
-    margin-top: var(--space-xs);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background .2s ease;
+  width: 100%;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 14px 0;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: var(--space-xs);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .personalinfo-page #cancelPhotoBtn:hover {
-    background: #e8e6e6;
+  background: var(--background);
+  color: var(--text-primary);
 }
 
 /* ====== Profile Fields ====== */
 .personalinfo-page .profile-fields {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-top: var(--space-md);
-    border: 1px solid #f0f0f0;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: var(--space-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
 }
 
 .personalinfo-page .profile-field {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-md);
-    border-bottom: 1px solid #eee;
-    transition: background .15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  transition: background var(--transition-fast);
 }
 
 .personalinfo-page .profile-field:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .personalinfo-page .profile-field.clickable:hover {
-    cursor: pointer;
-    background: #f5f5f5;
+  cursor: pointer;
+  background: rgba(255, 107, 74, 0.04);
+}
+
+.personalinfo-page .profile-field.clickable:hover .chevron {
+  color: var(--primary);
 }
 
 .personalinfo-page .field-content label {
-    font-size: 17px;
-    font-weight: 600;
-    color: #111;
-    cursor: pointer;
-    display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: block;
 }
 
 .personalinfo-page .field-value {
-    font-size: 15px;
-    color: #999;
-    font-weight: 400;
-    margin-top: 2px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-top: var(--space-xs);
 }
 
 .personalinfo-page .field-value.masked {
-    letter-spacing: 2px;
+  letter-spacing: 2px;
 }
 
 /* Chevron */
 .personalinfo-page .chevron {
-    font-size: 30px;
-    color: #A6A6A6;
-    line-height: 1;
+  font-size: 24px;
+  color: var(--text-secondary);
+  line-height: 1;
+  transition: color var(--transition-fast);
 }
 
 /* ====== Responsive ====== */
 @media (max-width: 480px) {
-    .personalinfo-page {
-        padding: var(--space-md);
-    }
+  .personalinfo-page {
+    padding: var(--space-md);
+  }
 
-    .personalinfo-page .profile-header h1 {
-        font-size: 24px;
-    }
+  .personalinfo-page .profile-header h1 {
+    font-size: 24px;
+  }
 
-    .personalinfo-page .profile-photo-container {
-        width: 80px;
-        height: 80px;
-    }
+  .personalinfo-page .profile-photo-container {
+    width: 80px;
+    height: 80px;
+  }
 }
