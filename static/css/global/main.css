@@ -1,12 +1,62 @@
+/* ====================================================
+   DESIGN SYSTEM VARIABLES
+   ==================================================== */
+:root {
+  --primary: #ff6b4a;
+  --primary-hover: #f15a37;
+  --secondary: #ffb86c;
+  --accent: #ff8a65;
+
+  --background: #faf8f6;
+  --surface: #ffffff;
+
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+
+  --border-color: #e5e7eb;
+
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
 /* ========================== General ========================== */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+  transition: color var(--transition-fast);
 }
 
 /* ========================== Navbar ========================== */
@@ -16,18 +66,18 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #d5ad09; /* أصفر ذهبي */
-  color: black;
-  padding: 15px 40px;
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: var(--space-md) var(--space-2xl);
   z-index: 2000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid #eee;
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* Profile Button */
 .profile-container {
   position: relative;
-  display:inline-block;
+  display: inline-block;
 }
 
 .profile-btn {
@@ -35,8 +85,13 @@ a {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid white;
-  background:white;
+  border: 2px solid var(--border-color);
+  background: var(--surface);
+  transition: border-color var(--transition-fast);
+}
+
+.profile-btn:hover {
+  border-color: var(--primary);
 }
 
 /* Dropdown Box */
@@ -44,22 +99,22 @@ a {
   position: absolute;
   top: 100%;
   right: -120px;
-  margin-top:10px;
+  margin-top: var(--space-sm);
   width: auto;
-  min-width:200px;
-  max-width:90vw;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  padding: 15px;
+  min-width: 220px;
+  max-width: 90vw;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-md);
   display: none;
   z-index: 5000;
-  overflow:hidden;
-  box-sizing:border-box;
-  transform:translateY(-10px);
-  opacity:0;
-  transition: all 0.25s ease;
-
+  overflow: hidden;
+  box-sizing: border-box;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: all var(--transition-normal);
+  border: 1px solid var(--border-color);
 }
 
 .profile-dropdown.show {
@@ -72,27 +127,29 @@ a {
 .profile-top {
   display: flex;
   align-items: center;
-  gap: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
-  margin-bottom: 10px;
+  gap: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 .profile-big {
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
-.profile-info{
-  gap:5px;
-  display:flex;
-  flex-direction:column;
+.profile-info {
+  gap: var(--space-xs);
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-info p {
+  margin: 0;
   font-size: 13px;
-  color: gray;
+  color: var(--text-secondary);
 }
 
 /* Manage Button */
@@ -100,60 +157,63 @@ a {
   display: block;
   text-align: center;
   padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  font-weight: bold;
-  color: #1a73e8;
+  margin: var(--space-md) 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  color: var(--primary);
+  transition: all var(--transition-fast);
 }
 
 .manage-btn:hover {
-  background: #f1f5ff;
+  background: rgba(255, 107, 74, 0.08);
+  border-color: var(--primary);
 }
-
 
 /* Footer */
 .profile-footer {
-  border-top: 1px solid #eee;
-  margin-top: 10px;
-  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-md);
   text-align: center;
 }
 
 .logout-btn {
-  border-radius:8px;
-  color: white;
+  border-radius: var(--radius-sm);
+  color: var(--surface);
   font-weight: bold;
-  background-color: #db4427;
+  background-color: var(--danger);
   padding: 10px 20px;
-  border:none;
-  cursor:pointer;
-  transition: background 0.3s;
-
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  width: 100%;
 }
 
 .logout-btn:hover {
-  background-color:#c33d;
+  background-color: var(--primary-hover);
 }
-
 
 .nav-center {
   display: flex;
-  gap: 30px;
+  gap: var(--space-xl);
   align-items: center;
 }
 
 .nav-item {
   position: relative;
   cursor: pointer;
-  font-size: 18px;
-  padding: 10px 15px;
-  border-radius: 6px;
-  transition: background 0.3s;
+  font-size: 16px;
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--primary);
 }
 
 .nav-right {
@@ -163,50 +223,55 @@ a {
 
 .auth-buttons {
   display: flex;
-  gap: 10px;
+  gap: var(--space-sm);
 }
 
 .auth-buttons a {
-  padding: 10px 15px;
-  border-radius: 999px;
+  padding: 10px 20px;
+  border-radius: var(--radius-xl);
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+  transition: all var(--transition-fast);
 }
 
 .login-btn {
-  background: white;
-  color: black;
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
 }
 
 .login-btn:hover {
-  background: #f5f5f5;
+  background: var(--background);
+  border-color: var(--text-secondary);
 }
 
 .signup-btn {
-  background: black;
-  color: white;
-  border: 1.5px solid black;
+  background: var(--primary);
+  color: var(--surface);
+  border: 1.5px solid var(--primary);
 }
 
 .signup-btn:hover {
-  background: #333;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ========================== Cart ========================== */
 .cart {
   position: fixed;
   right: -420px;
-  width: 200px;
-  height: calc(100vh - 114px);
-  background: white;
-  color: black;
-  padding: 15px;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-  transition: right 0.3s ease;
+  width: 380px;
+  max-width: 90vw;
+  height: calc(100vh - 72px);
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-lg);
+  transition: right var(--transition-normal);
   z-index: 2005;
+  border-left: 1px solid var(--border-color);
 }
 
 .cart.open {
@@ -215,60 +280,71 @@ a {
 }
 
 .cart a {
-  background: #ffc107;
-  color: #000;
-  border-radius: 10px;
-  padding: 10px;
+  background: var(--primary);
+  color: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 12px;
   cursor: pointer;
   position: absolute;
-  bottom: 10px;
+  bottom: var(--space-md);
   left: 50%;
   transform: translateX(-50%);
+  width: calc(100% - 32px);
+  text-align: center;
+  font-weight: 600;
+  transition: background var(--transition-fast);
+}
+
+.cart a:hover {
+  background: var(--primary-hover);
 }
 
 .cart a.disabled {
-  pointer-events:none;
+  pointer-events: none;
   opacity: 0.5;
 }
 
 /* ========================== Cart Button ========================== */
 .cart-btn {
-  background: #ffcc00;
-  color: #000;
+  background: var(--primary);
+  color: var(--surface);
   border: none;
   padding: 10px 20px;
-  border-radius: 25px;
+  border-radius: var(--radius-xl);
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: all var(--transition-fast);
 }
 
 .cart-btn:hover {
-  background: #ffc107;
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /* ========================== Mega Menu ========================== */
 .mega-menu {
   display: none;
   position: fixed;
-  top: 60px;
+  top: 72px;
   left: 50%;
   transform: translateX(-50%) translateY(-20px);
   width: 90%;
   max-width: 900px;
   min-width: 300px;
-  padding: 30px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   flex-wrap: wrap;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
   z-index: 2100;
+  border: 1px solid var(--border-color);
 }
 
 .mega-menu.active {
@@ -281,39 +357,46 @@ a {
 
 .column {
   flex: 1;
+  min-width: 180px;
 }
 
 .column h3 {
-  cursor:pointer;
-  color: #333;
-  margin-bottom: 10px;
+  cursor: pointer;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+  transition: color var(--transition-fast);
 }
 
 .column a {
   display: block;
-  margin: 8px 0;
-  color: #333;
-  transition: color 0.25s;
+  margin: var(--space-xs) 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: color var(--transition-fast);
 }
 
 .column a:hover {
-  color: #d5ad09;
+  color: var(--primary);
 }
+
 .column h3:hover {
-  color: #d5ad09;
+  color: var(--primary);
 }
 
 /* ========================== Overlay ========================== */
 .overlay {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-normal);
   z-index: 2050;
+  backdrop-filter: blur(2px);
 }
 
 .overlay.active {
@@ -323,29 +406,32 @@ a {
 
 /* ========================== Footer ========================== */
 .site-footer {
-  background: #b30000;
-  color: white;
-  padding: 60px 40px 20px;
+  background: #181311;
+  color: #d1d5db;
+  padding: var(--space-3xl) var(--space-2xl) var(--space-lg);
+  border-top: 1px solid var(--border-color);
 }
 
 .footer-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-xl);
   max-width: 1200px;
   margin: auto;
 }
 
 .footer-logo {
   font-size: 28px;
-  font-weight: bold;
-  color: #ffd000;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
 }
 
 .footer-col h4 {
-  margin-bottom: 15px;
+  margin-bottom: var(--space-md);
   font-size: 18px;
-  color: #ffd000;
+  color: var(--surface);
+  font-weight: 600;
 }
 
 .footer-col ul {
@@ -354,40 +440,48 @@ a {
 }
 
 .footer-col li {
-  margin-bottom: 10px;
+  margin-bottom: var(--space-xs);
 }
 
 .footer-col a {
-  color: white;
-  transition: 0.3s;
+  color: #9ca3af;
+  font-size: 14px;
+  transition: color var(--transition-fast);
 }
 
 .footer-col a:hover {
-  color: #ffd000;
+  color: var(--primary);
 }
 
 .footer-bottom {
-  margin-top: 40px;
+  margin-top: var(--space-2xl);
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: var(--space-lg);
   font-size: 14px;
+  color: #6b7280;
 }
 
 /* ========================== Responsive ========================== */
 @media (max-width: 768px) {
+  .navbar {
+    padding: var(--space-md) var(--space-md);
+  }
+
   .mega-menu {
     width: 95%;
     left: 2.5%;
     transform: translateX(0) translateY(-15px);
     flex-direction: column;
+    gap: var(--space-md);
   }
+
   .mega-menu.active {
     transform: translateX(0) translateY(0);
   }
 
   .nav-center {
-    gap: 15px;
+    gap: var(--space-sm);
     flex-wrap: wrap;
   }
 }
