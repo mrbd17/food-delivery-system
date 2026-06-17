@@ -1,114 +1,162 @@
-
-*{
-    margin:0;
-    padding:0;
-    font-family:Arial,  sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
 }
 
-body{
-    background:white;
+body {
+  background: var(--background);
+  color: var(--text-primary);
 }
 
 .login {
   padding: 10px 20px;
-  border-radius: 20px;
-  
-
+  border-radius: var(--radius-xl);
 }
 
-
-
-
-
+/* ========================== Hero Section ========================== */
 .hero {
-    background:url("https://images.unsplash.com/photo-1606755962773-d324e38d54a2") center/cover;
-    height: 60vh;
-    align-items:center;
-    padding: 50px;
-    display:flex;
-    justify-content:center;
-}
-
-
-.hero-box p {
-  font-size: 1.2rem;
-  margin: 0;
-  color: #ffd; /* لون فاتح للنص عشان يبان على الصورة */
-}
-
-.hero-box button {
-  background: #ffcc00; /* لون جذاب */
-  color: #000;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.hero-box button:hover {
-  background: #c40000; /* أحمر عند hover */
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("https://images.unsplash.com/photo-1606755962773-d324e38d54a2")
+      center/cover;
+  height: 60vh;
+  align-items: center;
+  padding: var(--space-xl);
+  display: flex;
+  justify-content: center;
 }
 
 .hero-box {
-    background: rgba(0,0,0,0.7);
-    color:white;
-    padding: 40px;
-    border-radius: 15px;
-    align-items:center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 500px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
 
-    
+.hero-box h1,
+.hero-box h2 {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.hero-box p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.hero-box button {
+  background: var(--primary);
+  color: var(--surface);
+  border: none;
+  padding: 12px 28px;
+  border-radius: var(--radius-xl);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.hero-box button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-md);
 }
 
 .hero-picture {
-  position:relative;
-  width:100%;
-  height:70vh;
-  overflow:hidden;
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  margin-top: var(--space-lg);
 }
 
 .hero-picture img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  cursor:pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: transform var(--transition-normal);
 }
 
+.hero-picture img:hover {
+  transform: scale(1.03);
+}
+
+/* ========================== Features Section ========================== */
 .features {
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  padding:20px;
-  margin: top 20px;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.feature-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  border: 1px solid var(--border-color);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }
 
 .feature-card img {
   width: 100%;
-  border-radius:10px;
-  transition: transform 0.3s ease;
-  cursor:pointer;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-normal);
+  cursor: pointer;
 }
 
-.feature-card img:hover{
-  transform: scale(1.05)
+.feature-card img:hover {
+  transform: scale(1.04);
 }
 
-@media (max-width: 768px) {
+/* ========================== Responsive ========================== */
+@media (max-width: 992px) {
   .features {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: var(--space-md);
   }
 }
 
-
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .features {
-    grid-template-columns:1fr;
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .hero {
+    height: auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .hero-box {
+    padding: var(--space-lg);
   }
 }
