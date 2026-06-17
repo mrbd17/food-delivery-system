@@ -1,8 +1,57 @@
-* {
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
+/* =====================================================
+   AUTH.CSS  —  Premium Food Delivery Authentication
+   Layout: Split-screen card (form left, brand right)
+   ===================================================== */
+
+/* ── GOOGLE FONT ──────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+/* ── DESIGN TOKENS ────────────────────────────────── */
+:root {
+  --primary: #ff6b4a;
+  --primary-hover: #f15a37;
+  --primary-light: rgba(255, 107, 74, 0.12);
+  --secondary: #ffb86c;
+
+  --background: #faf8f6;
+  --surface: #ffffff;
+
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  --border-color: #e5e7eb;
+  --border-focus: #ff6b4a;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.14);
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-xl: 24px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.35s ease;
+
+  /* Brand overlay gradient */
+  --brand-gradient: linear-gradient(145deg, #ff6b4a 0%, #f15a37 40%, #ff8a65 100%);
+}
+
+/* ── RESET ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -69,8 +118,15 @@ body {
     z-index: 5;
 }
 
-/* ================= FORM STYLING ================= */
+/* ── BRAND LOGO / TAGLINE ABOVE FORM ─────────────── */
+.form-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
 
+/* ── FORM ─────────────────────────────────────────── */
 form {
     width: 100%;
     max-width: 350px;
@@ -92,29 +148,82 @@ form {
 }
 
 form h1 {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 26px;
-    color: #333;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.6px;
+  line-height: 1.2;
+  margin-bottom: var(--space-xs);
 }
 
-input {
-    padding: 13px 15px;
-    border: 2px solid #e8e8e8;
-    border-radius: 8px;
-    font-size: 14px;
-    background: #f9f9f9;
-    transition: all 0.3s ease;
+form h1 span {
+  color: var(--primary);
 }
 
-input:focus {
-    outline: none;
-    background: #fff;
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-    transform: translateY(-2px);
+.form-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  margin-bottom: var(--space-sm);
+  line-height: 1.5;
+}
+
+/* ── DIVIDER ──────────────────────────────────────── */
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-xs) 0;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.form-divider span {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── INPUTS ───────────────────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: "Inter", system-ui, sans-serif;
+  background: #f9fafb;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover {
+  border-color: #d1d5db;
+  background: var(--surface);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 input::placeholder {
@@ -176,6 +285,137 @@ input::placeholder {
     display: none;
 }
 
+/* ── DIVIDER ──────────────────────────────────────── */
+.divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-md) 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+/* ── SOCIAL BUTTONS ───────────────────────────────── */
+.social-buttons {
+  display: flex;
+  gap: var(--space-md);
+  width: 100%;
+  justify-content: center;
+  margin: var(--space-md) 0;
+}
+
+.social-btn {
+  flex: 1;
+  height: 46px;
+  min-width: 44px;
+  padding: 0 var(--space-sm);
+  border: 1.5px solid var(--border-color);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: none;
+  letter-spacing: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.social-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: #d1d5db;
+}
+
+.social-btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.social-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+/* SOCIAL ICON */
+.social-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+/* GOOGLE BUTTON */
+.google-btn {
+  color: #1f2937;
+}
+
+.google-btn:not(:disabled):hover {
+  border-color: #4285f4;
+  color: #4285f4;
+  background: rgba(66, 133, 244, 0.04);
+}
+
+/* GITHUB BUTTON */
+.github-btn {
+  color: #24292e;
+}
+
+.github-btn:not(:disabled):hover {
+  border-color: #24292e;
+  background: #f6f8fa;
+}
+
+/* FACEBOOK BUTTON */
+.facebook-btn {
+  color: #1877f2;
+}
+
+.facebook-btn:not(:disabled):hover {
+  border-color: #1877f2;
+  background: rgba(24, 119, 242, 0.04);
+}
+
+/* Disabled state tooltip */
+.social-btn:disabled::after {
+  content: 'Soon';
+  position: absolute;
+  font-size: 9px;
+  bottom: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.social-btn:disabled:hover::after {
+  opacity: 1;
+}
+
 /* ================= BUTTONS ================= */
 
 button {
@@ -214,29 +454,42 @@ button[type="submit"]:active:not(:disabled) {
 
 /* GOOGLE BUTTON */
 .google-btn {
-    padding: 13px;
-    background: #fff;
-    color: #333;
-    border: 2px solid #e8e8e8;
-    width: 100%;
-    margin-top: 12px;
-    transition: all 0.3s ease;
-    display: none;
+  display: none;
+  height: 46px;
+  padding: 0 var(--space-md);
+  width: 100%;
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+  font-weight: 600;
+  font-size: 13.5px;
+  gap: var(--space-sm);
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  margin-top: 0;
+}
+
+.google-btn::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  flex-shrink: 0;
 }
 
 .container.right-panel-active .google-btn {
-    display: block;
+  display: flex;
 }
 
 .google-btn:hover:not(:disabled) {
-    border-color: #667eea;
-    color: #667eea;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
-}
-
-.google-btn:before {
-    content: "🔍 ";
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ================= OVERLAY (50% right) ================= */
@@ -412,28 +665,25 @@ button[type="submit"]:active:not(:disabled) {
         max-width: 100%;
     }
 
-    form h1 {
-        font-size: 22px;
-    }
+  form h1 {
+    font-size: 24px;
+  }
 
-    input,
-    button {
-        font-size: 13px;
-        padding: 11px 13px;
-    }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    height: 46px;
+    font-size: 15px;
+  }
 
-    .toggle-password {
-        right: 10px;
-    }
+  button[type="submit"] {
+    height: 46px;
+  }
 
-    .eye-icon {
-        width: 18px;
-        height: 18px;
-    }
-
-    .google-btn {
-        display: block;
-    }
+  /* Show Google button on mobile always */
+  .google-btn {
+    display: flex !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -449,38 +699,13 @@ button[type="submit"]:active:not(:disabled) {
         padding: 30px 20px;
     }
 
-    form {
-        gap: 12px;
-    }
+  form {
+    gap: 10px;
+  }
 
-    form h1 {
-        font-size: 20px;
-        margin-bottom: 8px;
-    }
-
-    input,
-    button {
-        font-size: 14px;
-        padding: 12px;
-    }
-
-    .password-wrapper input {
-        padding-right: 40px;
-    }
-
-    .eye-icon {
-        width: 18px;
-        height: 18px;
-    }
-
-    button {
-        letter-spacing: 0;
-    }
-
-    button[type="submit"],
-    .google-btn {
-        margin-top: 6px;
-    }
+  form h1 {
+    font-size: 22px;
+  }
 }
 
 /* ================= ACCESSIBILITY ================= */

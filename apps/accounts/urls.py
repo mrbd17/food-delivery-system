@@ -11,6 +11,7 @@ urlpatterns = [
     # AUTH
     # =========================
     path("auth/", auth.auth_page, name="auth"),
+    path("google/", auth.GoogleAuth.as_view(), name='google_auth'),
     path("register/", auth.RegisterAPIView.as_view(), name="register"),
     path("login/", auth.LoginAPIView.as_view(), name="login"),
     path("logout/", auth.LogoutAPIView.as_view(), name="logout"),

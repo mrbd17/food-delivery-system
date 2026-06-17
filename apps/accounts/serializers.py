@@ -6,6 +6,22 @@ from django.contrib.auth import authenticate
 import logging
 logger = logging.getLogger(__name__)
 
+class GoogleAuthSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True, allow_blank=False)
+    mode = serializers.ChoiceField(choices=['login', 'signup'], required=True)
+
+    def validate_token(self, value):
+        if not value or len(value) < 10:
+            raise serializers.ValidationError("Invalid token Format")
+        return value
+
+    def vlaidate_mode(self, value):
+        if value not in ['login', 'signup']:
+            raise serializers.ValidationError("Mode must be 'Login' or 'Signup'")
+        return value
+    
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)

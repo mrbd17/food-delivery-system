@@ -6,8 +6,43 @@ export class AuthAPI {
         this.API_BASE = "/api/account/";
     }
 
-    async request(path, data){
+    async loginWithGoogle(credentialResponse, mode){
+        try {
+            const res = await fetch(`${this.API_BASE}google/`,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                    "X-CSRFToken":this.getCSRFToken,
+                },
+                credentials:"include", 
+                body: JSON.stringify({
+                    token:credentialResponse.credential,
+                    mode:mode
+                })              
+            })
 
+            const data  = await res.json();
+
+            if (!res.ok){
+                throw new Error(data.message || "Authentication failed")
+            }
+
+            return {
+                success:true,
+                data:data,
+                message: data.message
+            }
+        } catch (error){
+            console.log("Google login error", error);
+            return {
+                success:false,
+                message: error.message || 'Network error',
+                data: null
+            }
+        } 
+    }
+
+    async request(path, data){
         try {
             const res = await fetch(path, {
                 method: "POST",
@@ -25,7 +60,6 @@ export class AuthAPI {
             console.log(res.status)
 
             if(!res.ok){
-                console.log("line 28 res faild")
                 return {
                     success:false,
                     errors:result.errors || {message:result.message} ||"Unknown error"
@@ -39,6 +73,10 @@ export class AuthAPI {
                 errors:{network: "Network error. Check your connection"}
             }
         }
+    } 
+
+    async googleauth(data){
+        return this.request(`${this.API_BASE}google/`, data)
     }
 
     async login(data){
