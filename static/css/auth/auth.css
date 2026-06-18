@@ -1,12 +1,5 @@
-/* =====================================================
-   AUTH.CSS  —  Premium Food Delivery Authentication
-   Layout: Split-screen card (form left, brand right)
-   ===================================================== */
-
-/* ── GOOGLE FONT ──────────────────────────────────── */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
-/* ── DESIGN TOKENS ────────────────────────────────── */
 :root {
   --primary: #ff6b4a;
   --primary-hover: #f15a37;
@@ -41,11 +34,9 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.35s ease;
 
-  /* Brand overlay gradient */
   --brand-gradient: linear-gradient(145deg, #ff6b4a 0%, #f15a37 40%, #ff8a65 100%);
 }
 
-/* ── RESET ────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -54,7 +45,6 @@
   padding: 0;
 }
 
-/* ── BASE ─────────────────────────────────────────── */
 body {
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   background: var(--background);
@@ -68,8 +58,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── CONTAINER ────────────────────────────────────── */
-/*  Wider & taller to comfortably hold the signup form  */
 .container {
   position: relative;
   width: 960px;
@@ -80,10 +68,9 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   border: 1px solid rgba(229, 231, 235, 0.6);
-  display: flex; /* fallback alignment */
+  display: flex;
 }
 
-/* ── FORM SIDE (LEFT 50%) ─────────────────────────── */
 .form-container {
   position: absolute;
   top: 0;
@@ -100,7 +87,6 @@ body {
   overflow-y: auto;
 }
 
-/* Login — visible by default */
 .login-container {
   opacity: 1;
   z-index: 5;
@@ -108,14 +94,12 @@ body {
   animation: slideInLeft 0.55s ease-out both;
 }
 
-/* Signup — hidden by default */
 .sign-up-container {
   opacity: 0;
   z-index: 4;
   visibility: hidden;
 }
 
-/* Panel toggle */
 .container.right-panel-active .login-container {
   opacity: 0;
   visibility: hidden;
@@ -129,15 +113,6 @@ body {
   animation: slideInRight 0.55s ease-out both;
 }
 
-/* ── BRAND LOGO / TAGLINE ABOVE FORM ─────────────── */
-.form-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: var(--space-lg);
-}
-
-/* ── FORM ─────────────────────────────────────────── */
 form {
   width: 100%;
   max-width: 340px;
@@ -169,30 +144,6 @@ form h1 span {
   line-height: 1.5;
 }
 
-/* ── DIVIDER ──────────────────────────────────────── */
-.form-divider {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin: var(--space-xs) 0;
-}
-
-.form-divider::before,
-.form-divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--border-color);
-}
-
-.form-divider span {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-/* ── INPUTS ───────────────────────────────────────── */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
@@ -230,7 +181,6 @@ input::placeholder {
   font-size: 13.5px;
 }
 
-/* ── PASSWORD WRAPPER ─────────────────────────────── */
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -285,7 +235,136 @@ input::placeholder {
   display: none;
 }
 
-/* ── BUTTONS ──────────────────────────────────────── */
+.divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-md) 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+#google-button-signup,
+#google-button-signin {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-md) 0;
+  width: 100%;
+}
+
+#google-button-signup > div,
+#google-button-signin > div {
+  width: 100% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.social-buttons {
+  display: flex;
+  gap: var(--space-md);
+  width: 100%;
+  justify-content: center;
+  margin: var(--space-md) 0;
+}
+
+.social-btn {
+  flex: 1;
+  height: 46px;
+  min-width: 44px;
+  padding: 0 var(--space-sm);
+  border: 1.5px solid var(--border-color);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: none;
+  letter-spacing: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.social-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: #d1d5db;
+}
+
+.social-btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.social-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+.social-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.github-btn {
+  color: #24292e;
+}
+
+.github-btn:not(:disabled):hover {
+  border-color: #24292e;
+  background: #f6f8fa;
+}
+
+.facebook-btn {
+  color: #1877f2;
+}
+
+.facebook-btn:not(:disabled):hover {
+  border-color: #1877f2;
+  background: rgba(24, 119, 242, 0.04);
+}
+
+.social-btn:disabled::after {
+  content: 'Soon';
+  position: absolute;
+  font-size: 9px;
+  bottom: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.social-btn:disabled:hover::after {
+  opacity: 1;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -302,7 +381,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* PRIMARY — Submit */
 button[type="submit"] {
   height: 48px;
   padding: 0 var(--space-md);
@@ -328,47 +406,6 @@ button[type="submit"]:active:not(:disabled) {
   box-shadow: 0 2px 8px rgba(255, 107, 74, 0.3);
 }
 
-/* GOOGLE BUTTON */
-.google-btn {
-  display: none;
-  height: 46px;
-  padding: 0 var(--space-md);
-  width: 100%;
-  background: var(--surface);
-  color: var(--text-primary);
-  border: 1.5px solid var(--border-color);
-  font-weight: 600;
-  font-size: 13.5px;
-  gap: var(--space-sm);
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  margin-top: 0;
-}
-
-.google-btn::before {
-  content: "";
-  width: 18px;
-  height: 18px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: contain;
-  flex-shrink: 0;
-}
-
-.container.right-panel-active .google-btn {
-  display: flex;
-}
-
-.google-btn:hover:not(:disabled) {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
-}
-
-/* ── OVERLAY PANEL (RIGHT 50%) ────────────────────── */
 .overlay-container {
   position: absolute;
   top: 0;
@@ -388,7 +425,6 @@ button[type="submit"]:active:not(:disabled) {
   transition: transform 0.65s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/* Decorative circles for depth */
 .overlay::before {
   content: "";
   position: absolute;
@@ -427,7 +463,6 @@ button[type="submit"]:active:not(:disabled) {
   color: #fff;
 }
 
-/* Brand emoji / icon badge */
 .overlay-panel::before {
   content: "🍕";
   font-size: 52px;
@@ -487,7 +522,6 @@ button[type="submit"]:active:not(:disabled) {
   font-weight: 400;
 }
 
-/* GHOST BUTTON */
 .ghost-btn {
   display: inline-flex;
   align-items: center;
@@ -519,7 +553,6 @@ button[type="submit"]:active:not(:disabled) {
   transform: translateY(0);
 }
 
-/* ── ANIMATIONS ───────────────────────────────────── */
 @keyframes slideInLeft {
   from {
     opacity: 0;
@@ -553,9 +586,6 @@ button[type="submit"]:active:not(:disabled) {
   }
 }
 
-/* ── RESPONSIVE ───────────────────────────────────── */
-
-/* Tablet */
 @media (max-width: 860px) {
   .container {
     width: 96%;
@@ -563,7 +593,6 @@ button[type="submit"]:active:not(:disabled) {
   }
 }
 
-/* Mobile — stacks to single column */
 @media (max-width: 768px) {
   body {
     align-items: flex-start;
@@ -577,7 +606,6 @@ button[type="submit"]:active:not(:disabled) {
     box-shadow: var(--shadow-md);
   }
 
-  /* Form takes full width, stacked */
   .form-container {
     position: relative;
     width: 100%;
@@ -610,7 +638,6 @@ button[type="submit"]:active:not(:disabled) {
     visibility: visible;
   }
 
-  /* Hide the brand overlay panel on mobile */
   .overlay-container {
     display: none;
   }
@@ -634,9 +661,27 @@ button[type="submit"]:active:not(:disabled) {
     height: 46px;
   }
 
-  /* Show Google button on mobile always */
-  .google-btn {
-    display: flex !important;
+  .social-buttons {
+    gap: var(--space-sm);
+  }
+
+  .social-btn {
+    height: 44px;
+    font-size: 11px;
+  }
+
+  .social-btn span {
+    display: none;
+  }
+
+  .social-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .divider {
+    margin: var(--space-sm) 0;
+    font-size: 11px;
   }
 }
 
@@ -657,14 +702,39 @@ button[type="submit"]:active:not(:disabled) {
 
   form {
     gap: 10px;
+    max-width: 100%;
   }
 
   form h1 {
     font-size: 22px;
   }
+
+  .social-buttons {
+    gap: 8px;
+  }
+
+  .social-btn {
+    height: 42px;
+    font-size: 10px;
+    padding: 0 4px;
+  }
+
+  .social-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .divider {
+    gap: var(--space-sm);
+    margin: var(--space-sm) 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    height: 0.5px;
+  }
 }
 
-/* ── ACCESSIBILITY ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -675,7 +745,6 @@ button[type="submit"]:active:not(:disabled) {
   }
 }
 
-/* ── FOCUS VISIBLE ────────────────────────────────── */
 input:focus-visible,
 button:focus-visible {
   outline: 2.5px solid var(--primary);
