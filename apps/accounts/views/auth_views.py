@@ -13,12 +13,73 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.throttling import AnonRateThrottle
-from ..serializers import RegisterSerializer, LoginSerializer
+from ..google_service import GoogleAuthService
+from ..serializers import RegisterSerializer, LoginSerializer, GoogleAuthSerializer
+from google.auth.transport import requests
+from google.oauth2 import id_token
+
+import os
+import logging
+logger = logging.getLogger(__name__)
+
 User = get_user_model()
 
 def auth_page(request):
     get_token(request)
     return render(request, "auth/auth.html")
+
+
+from django.http import JsonResponse
+
+def google_callback(request):
+    return JsonResponse({"message": "Google callback reached"})
+
+    
+class GoogleAuth(APIView):
+    permission_classes= [AllowAny]
+
+    def post(self, request):
+        serializer = GoogleAuthSerializer(data=request.data)
+    
+        if not serializer.is_valid():
+            return Response(
+                {'success': False, 'errors': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            token = serializer.validated_data['token']
+            mode = serializer.validated_data['mode']
+
+            service = GoogleAuthService()
+            user = service.authenticate(token, mode)
+
+            auth_login(request, user)
+
+            return Response({
+                'success': True,
+                'message': f'Welcome {user.first_name or "back"}!',
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                    'name': user.first_name,
+                }
+            }, status=status.HTTP_200_OK)
+
+        except ValueError as e:
+            logger.warning(f"Google auth error: {str(e)}")
+            return Response(
+                {'success': False, 'message': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except Exception as e:
+            logger.error(f"Unexpected error in google_auth: {str(e)}")
+            return Response(
+                {'success': False, 'message': 'Server error'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
     # throttle_classes = [AnonRateThrottle]

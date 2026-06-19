@@ -20,6 +20,6 @@ def menu(request):
 
 class GetMenuView(generics.ListAPIView):
     serializer_class = GetMenuSerializer
-
+    permission_classes = [AllowAny]
     def get_queryset(self):
         return MenuItem.objects.filter(is_menu=True)

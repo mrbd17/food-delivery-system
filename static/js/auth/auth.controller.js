@@ -1,171 +1,91 @@
-import {AuthAPI} from "./auth.service.js"
-import {emit} from '../core/events.js';
+import { AuthAPI } from "./auth.service.js";
+import { emit } from '../core/events.js';
+import { GoogleAuthHandler } from './handlers/google.auth.handler.js';
+import { FormAuthHandler } from './handlers/form.auth.handler.js';
+import { UIHandler } from './handlers/ui.handler.js';
+
 class AuthController {
-    constructor(){
-        this.AuthAPI = new AuthAPI();
+    constructor() {
+        this.authService = new AuthAPI();
         this.emit = emit;
 
-        this.container = null;
-        this.loginForm = null;
-        this.registerForm = null;
-        this.loginBtn = null;
-        this.signUpBtn = null;
-        this.googleBtn = null;
+        this.setupElements();
+        
+        this.ui = new UIHandler(this.container);
+        this.googleAuth = new GoogleAuthHandler(this.authService, this.emit);
+        this.formAuth = new FormAuthHandler(this.authService, this.emit);
 
-        this.setupElement();
-        this.attachEvents();
-        this.initMode();
-    };
-
-    setloading(button, isLoading){
-        if(!button) return;
-        if(isLoading){
-            button.disabled = true;
-            button.dataset.originalText = button.textContent;
-            setTimeout(() => {
-               button.textContent = 'Loading... ' 
-            },5000)
-            
-        } else{
-            button.disabled = false;
-            button.textContent = button.dataset.originalText || 'Submit'
-        }
+        this.attachAllEvents();
+        this.initialize();
     }
-    
 
-    setupElement(){
+    setupElements() {
         this.container = document.getElementById("container");
-        this.googleBtn = document.getElementById("googleSignUp");
-
         this.loginBtn = document.getElementById("signIn");
         this.signUpBtn = document.getElementById("signUp");
-
         this.loginForm = document.getElementById("loginForm");
-        this.registerForm = document.getElementById("registerForm")
+        this.registerForm = document.getElementById("registerForm");
 
-        if (!this.container){
-            console.log("no container");
-            return
+        if (!this.container) {
+            console.error("Auth container not found");
         }
-    };
+    }
 
-    attachEvents(){
-        this.loginBtn?.addEventListener("click", () => this.switchMode("login"));
-        this.signUpBtn?.addEventListener("click", () => this.switchMode("signup"))
-        
-        this.loginForm?.addEventListener("submit", (e) => this.handleLogin(e))
-        this.registerForm?.addEventListener("submit", (e) => this.handleRegister(e));
+    attachAllEvents() {
+        this.ui.attachModeEvents(this.loginBtn, this.signUpBtn);
+        this.ui.attachPasswordToggle();
 
-        document.querySelectorAll(".toggle-password").forEach(btn => {
+        this.formAuth.attachFormEvents(this.loginForm, this.registerForm, {
+            onSuccess: (result, mode) => this.handleAuthResult(result, mode)
+        });
+
+        document.querySelectorAll('.github-btn, .facebook-btn').forEach(btn => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                this.togglePassword(e.currentTarget);
+                this.emit("toast:info", {
+                    message: "Coming soon!"
+                });
             });
         });
     }
 
-    initMode(){
-        const mode = new URLSearchParams(window.location.search).get("mode") || "login";
-        this.switchMode(mode, false)
-    }
-
-    switchMode(mode, updateUrl=true){
-        const isSignup = mode === 'signup';
-
-        this.container?.classList.toggle('right-panel-active', isSignup);
-        this.googleBtn.style.display = isSignup ? 'block':'none';
-
-        if (updateUrl){
-            window.history.replaceState(null, '', `?mode=${mode}`)
-        }
-    }
-
-    getErrorMessage(errors){
-        if(!errors) return [];
-
-        return Object.values(errors)
-            .flat()
-            .filter(Boolean)
-    }
-
-    async handleRegister(e){
-        e.preventDefault();
-
-        const button = e.target.querySelector('button[type=submit]');
-        const data = Object.fromEntries(new FormData(this.registerForm));
-
-        if (data.password1 !== data.password2){
-            this.emit("toast:error", {message: "Passwords dosn't match"});
-            return;
-        }
-
-        if (data.password1.length < 8){
-            this.emit("toast:error", {message: "Password must be at least 8 characters"})
-            return;
-        }
-
-        this.setloading(button, true);
-
-        const result = await this.AuthAPI.register(data);
-
-        this.setloading(button, false);
-        if(result.success){
-            
-            this.emit("toast:success", {message:result.errors[0]});
-            this.registerForm.reset();
-
-            setTimeout(() => {
-                window.location.href = '/api/account/email/send-otp/'
-            },1500);
-
-        }else {
-            this.getErrorMessage(result.errors)
-                .forEach(messages => {
-                    this.emit("toast:error", {message:messages})
-                })
-        }
-    }
-    async handleLogin(e){
-        e.preventDefault();
-
-        const button = e.target.querySelector('button[type=submit]');
-        const data = Object.fromEntries(new FormData(this.loginForm));
-
+    initialize() {
+        this.ui.initMode();
         
-        this.setloading(button, true);
+        const clientId = document.body.dataset.googleClientId;
+        this.googleAuth.setupGoogleAuth(
+            clientId, 
+            this.handleGoogleResponse.bind(this)
+        );
+       
+    }
 
-        const result = await this.AuthAPI.login(data);
+    async handleGoogleResponse(response) {
+        const result = await this.googleAuth.handleGoogleResponse(
+            response, 
+            () => this.ui.getCurrentMode()
+        );
+        this.handleAuthResult(result, this.ui.getCurrentMode());
+    }
 
-        this.setloading(button, false);
-        if(result.success){
+    handleAuthResult(result, mode) {
+        if (result.success) {
+            const messageMap = {
+                'signup': 'Account created successfully!',
+                'login': 'Logged in successfully!'
+            };
+
+            this.emit("toast:success", {
+                message: result.message || messageMap[mode]
+            });
 
             setTimeout(() => {
-                this.emit("toast:success", {message:"Logged in successfully"});
-                window.location.href = '/'
-            },4000);
-
-        }else {
-            console.log(result.message)
-            this.emit("toast:error", {message:result.message})
+                window.location.href = '/';
+            }, 1500);
+        } else {
+            this.emit("toast:error", { message: result.message });
         }
     }
-
-    togglePassword(button) {
-        const input = document.getElementById(button.dataset.target);
-        if (!input) return;
-
-        const isHidden = input.type === 'password';
-        input.type = isHidden ? 'text' : 'password';
-
-        const eyeOn = button.querySelector('.eye-on');
-        const eyeOff = button.querySelector('.eye-off');
-
-        if (eyeOn && eyeOff) {
-            eyeOn.style.display = isHidden ? 'none' : 'block';
-            eyeOff.style.display = isHidden ? 'block' : 'none';
-        }
-    }
-    
 }
 
-const authConstroller = new AuthController()
+const authController = new AuthController();
