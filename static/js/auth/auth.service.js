@@ -62,7 +62,8 @@ export class AuthAPI {
             if(!res.ok){
                 return {
                     success:false,
-                    errors:result.errors || {message:result.message} ||"Unknown error"
+                    errors:result.errors || {message:result.message} ||"Unknown error",
+                    message:result.massage
                 }
             }
 
@@ -75,7 +76,7 @@ export class AuthAPI {
         }
     } 
 
-    async googleauth(data){
+    async google_auth(data){
         return this.request(`${this.API_BASE}google/`, data)
     }
 

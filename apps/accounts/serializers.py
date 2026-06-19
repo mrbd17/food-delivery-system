@@ -15,7 +15,7 @@ class GoogleAuthSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid token Format")
         return value
 
-    def vlaidate_mode(self, value):
+    def validate_mode(self, value):
         if value not in ['login', 'signup']:
             raise serializers.ValidationError("Mode must be 'Login' or 'Signup'")
         return value
@@ -42,7 +42,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs["password1"] != attrs["password2"]:
             raise serializers.ValidationError(
-                {"password2": "passwords dosen't match"}
+                {"password2": "passwords dose'nt match"}
             )
         validate_password(attrs["password1"])
 
@@ -57,6 +57,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validate_data["password1"]
         
         )
+        user.is_active = False
         return user
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

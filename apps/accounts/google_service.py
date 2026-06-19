@@ -16,25 +16,25 @@ class GoogleAuthService:
     def verify_token(self, token):
 
         try:
-            idinfo = id_token.verify_oauth2_token(
+            id_info = id_token.verify_oauth2_token(
                 token,
                 requests.Request(),
                 self.client_id
             )
 
-            if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
                 raise ValueError('Invalid token issuer')
 
-            return idinfo
+            return id_info
 
         except ValueError as e:
             logger.warning(f"Token verification failed: {str(e)}")
             raise
 
-    def extract_user_data(self, idinfo):
+    def extract_user_data(self, id_info):
 
-        email = idinfo.get('email')
-        name = idinfo.get('name', '')
+        email = id_info.get('email')
+        name = id_info.get('name', '')
 
         if not email:
             raise ValueError('Email not provided by Google')
@@ -82,8 +82,8 @@ class GoogleAuthService:
 
     def authenticate(self, token, mode):
 
-        idinfo = self.verify_token(token)
-        user_data = self.extract_user_data(idinfo)
+        id_info = self.verify_token(token)
+        user_data = self.extract_user_data(id_info)
 
         if mode == 'login':
             user = self.handle_login(user_data)

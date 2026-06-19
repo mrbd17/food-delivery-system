@@ -29,6 +29,12 @@ def auth_page(request):
     return render(request, "auth/auth.html")
 
 
+from django.http import JsonResponse
+
+def google_callback(request):
+    return JsonResponse({"message": "Google callback reached"})
+
+    
 class GoogleAuth(APIView):
     permission_classes= [AllowAny]
 
