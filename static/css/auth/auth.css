@@ -464,7 +464,6 @@ button[type="submit"]:active:not(:disabled) {
 }
 
 .overlay-panel::before {
-  content: "🍕";
   font-size: 52px;
   display: block;
   margin-bottom: var(--space-sm);
@@ -615,7 +614,7 @@ button[type="submit"]:active:not(:disabled) {
     transform: none !important;
     opacity: 1 !important;
     visibility: visible !important;
-    overflow-y: visible;
+    overflow-y: hidden;
   }
 
   .login-container {

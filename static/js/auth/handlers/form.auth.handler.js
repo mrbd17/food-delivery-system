@@ -1,7 +1,8 @@
 export class FormAuthHandler {
-    constructor(authService, emit) {
+    constructor(authService, emit, otpHandler) {
         this.authService = authService;
         this.emit = emit;
+        this.otpHandler = otpHandler
     }
 
     attachFormEvents(loginForm, registerForm, handlers) {
@@ -36,10 +37,28 @@ export class FormAuthHandler {
         }
 
         this.setLoading(button, true);
-        const result = await this.authService.register(formData);
-        this.setLoading(button, false);
+        try {
+            const result = await this.authService.register(formData);
+            if (result.success){
+                const otpSent = await this.otpHandler.sendOTP(formData.email)
 
-        onSuccess(result, 'signup');
+                if (otpSent.success){
+                    this.emit("toast:success", {message:otpSent.message})
+                    setTimeout(() => {
+                        window.location.href = `/api/account/email/verify-otp?token=${otpSent.token}`
+                    }, 2000)
+                } else {
+                    this.emit("toast:error", { 
+                        message:otpSent.message
+                    });
+                }
+            } else {
+                this.emit("toast:error", { message: result.message });
+            }
+        } finally {
+            this.setLoading(button, false);
+        }
+      
     }
 
     validatePasswords(password1, password2) {

@@ -3,18 +3,21 @@ import { emit } from '../core/events.js';
 import { GoogleAuthHandler } from './handlers/google.auth.handler.js';
 import { FormAuthHandler } from './handlers/form.auth.handler.js';
 import { UIHandler } from './handlers/ui.handler.js';
+import { OTPHandler} from './handlers/otp-handler.js';
+import {getCSRFToken} from '../accounts/base.js';
 
 class AuthController {
     constructor() {
         this.authService = new AuthAPI();
         this.emit = emit;
-
+        this.emit = emit
         this.setupElements();
+        this.getCSRFToken = getCSRFToken();
         
         this.ui = new UIHandler(this.container);
         this.googleAuth = new GoogleAuthHandler(this.authService, this.emit);
-        this.formAuth = new FormAuthHandler(this.authService, this.emit);
-
+        this.otpHandler = new OTPHandler(this.getCSRFToken)
+        this.formAuth = new FormAuthHandler(this.authService, this.emit,this.otpHandler);
         this.attachAllEvents();
         this.initialize();
     }

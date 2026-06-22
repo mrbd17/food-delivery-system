@@ -19,10 +19,10 @@ urlpatterns = [
     # =========================
     # EMAIL VERIFICATION
     # =========================
-    path("email/send-otp/", email.send_email_verification_otp, name="send-email-otp"),
-    path("email/verify/", email.verify_email_otp, name="verify-email-otp"),
-    path("email/resend/", email.resend_email_otp, name="resend-email-otp"),
-
+    path("email/verify-otp/",email.verify_otp, name="verify-otp"),
+    path('email/otp/send/', email.SendOTPAPIView.as_view(), name='api-send-otp'),
+    path('email/otp/verify/', email.VerifyOTPAPIView.as_view(), name='api-verify-otp'),
+    path('email/otp/resend/', email.ResendOTPAPIView.as_view(), name='api-resend-otp'),
     # =========================
     # PASSWORD RESET
     # =========================

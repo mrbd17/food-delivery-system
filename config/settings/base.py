@@ -43,6 +43,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+SECURE_CONTENT_SECURITY_POLICY = {
+    'default-src': ("'self'",),
+    'script-src': ("'self'", "accounts.google.com"),
+    'frame-src': ("'self'", "accounts.google.com"),
+    'connect-src': ("'self'", "accounts.google.com"),
+    'img-src': ("'self'", "https:"),
+}
+
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
