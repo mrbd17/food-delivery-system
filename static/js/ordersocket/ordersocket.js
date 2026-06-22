@@ -7,7 +7,7 @@ export class OrderSocket{
         this.orderId = orderId;
         this.bus = new EventBus();
         this.core = new SocketCore(
-            `ws://127.0.0.1:8000/ws/orders/${this.orderId}/`
+            `ws://${window.location.host}/ws/orders/${this.orderId}/`
         );
         this.protocol = new OrderProtocol(this.core, this.bus);
     }

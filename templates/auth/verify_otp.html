@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - FoodDelivery</title>
+    <link rel="stylesheet" href="/static/css/auth/otp.css">
+</head>
+<body>
+
+<div class="otp-container">
+    <div class="otp-card">
+        
+        <h2>Verify Your Email</h2>
+        <p id="otp-email">Enter the 6-digit code sent to your email</p>
+
+        <form id="otp-form">
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autocomplete="off">
+                <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autocomplete="off">
+                <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autocomplete="off">
+                <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autocomplete="off">
+                <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autocomplete="off">
+                <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autocomplete="off">
+            </div>
+
+            <button type="submit" class="verify-btn" id="verify-btn">
+                <span>Verify Code</span>
+                <span class="loader"></span>
+            </button>
+        </form>
+
+        <div class="resend-section">
+            <p>Didn't receive the code?</p>
+            <button type="button" class="resend-btn" id="resend-btn">
+                Resend Code
+            </button>
+            <span id="resend-timer" class="resend-timer" style="display: none;">
+                Wait <span id="timer-seconds">60</span>s
+            </span>
+        </div>
+
+        <a href="/api/account/auth?mode=login" class="back-link">← Back to Login</a>
+    </div>
+</div>
+    <div id="toast-container" class="toast-container"></div>
+
+    <script type="module" src="/static/js/auth/pages/otp-verify.js"></script>
+    <script type="module" src="/static/js/vendor/axios.min.js"></script>
+    <script type="module" src="/static/js/app/app.js"></script>
+
+</body>
+</html>

@@ -23,6 +23,8 @@ export class GoogleAuthHandler {
             script.async = true;
             script.defer = true;
 
+            script.referrerPolicy = "strict-origin-when-cross-origin"; 
+
             script.onload = () => {
                 if (window.google?.accounts?.id) {
                     resolve();
@@ -55,10 +57,9 @@ export class GoogleAuthHandler {
         try {
             google.accounts.id.initialize({
                 client_id: clientId,
-                callback:  (res) => {
-                console.log("GOOGLE CALLBACK HIT:", res);
-  },
+                callback: callback,
                 auto_select: false,
+                
             });
 
             this.renderGoogleButtons();
@@ -88,11 +89,4 @@ export class GoogleAuthHandler {
         }
     }
 
-    async handleGoogleResponse(response, getCurrentMode) {
-        console.log("GOOGLE CALLBACK FIRED");
-        const mode = getCurrentMode();
-        const result = await this.authService.loginWithGoogle(response, mode);
-        
-        return result;
-    }
 }

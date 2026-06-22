@@ -1,9 +1,12 @@
 import { OTPHandler } from '../handlers/otp-handler.js';
-import { emit } from '/static/js/core/events.js';
+import {getCSRFToken} from '../../accounts/base.js';
+import { emit } from '../../core/events.js';
 
 class OTPVerifyPage {
     constructor() {
-        this.otpHandler = new OTPHandler(emit);
+        this.CSRFToken = getCSRFToken()
+        this.emit = emit;
+        this.otpHandler = new OTPHandler(this.CSRFToken);
         this.verificationToken = new URLSearchParams(window.location.search).get('token');
         
         if (!this.verificationToken) {
@@ -32,17 +35,36 @@ class OTPVerifyPage {
 
     handleOTPInput() {
         this.inputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < this.inputs.length - 1) {
+
+            input.addEventListener("input", () => {
+                input.value = input.value.replace(/[^0-9]/g, "");
+                
+                if(input.value && index < this.inputs.length - 1) {
                     this.inputs[index + 1].focus();
-                }
+                }      
             });
+
+            input.addEventListener("paste", (e) => {
+                e.preventDefault();
+
+                const paste = e.clipboardData
+                    .getData("text")
+                    .replace(/\D/g,"")
+                    .split("");
+                
+                paste.forEach((num, i) => {
+                    if(i < this.inputs.length) {
+                        this.inputs[i].value = num;
+                    }
+                });
 
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !input.value && index > 0) {
                     this.inputs[index - 1].focus();
                 }
             });
+        });
+
         });
     }
 
@@ -54,20 +76,23 @@ class OTPVerifyPage {
             .join('');
 
         if (otpCode.length !== 6) {
-            emit('toast:error', { message: 'Please enter all 6 digits' });
+            this.emit('toast:error', { message: 'Please enter all 6 digits' });
             return;
         }
 
         this.setLoading(this.verifyBtn, true);
         
-        const success = await this.otpHandler.verifyOTP(otpCode, this.verificationToken);
-
+        const data = await this.otpHandler.verifyOTP(otpCode, this.verificationToken);
+        console.log(data)
+        console.log(data.status)
         this.setLoading(this.verifyBtn, false);
 
-        if (success) {
+        if (data) {
             setTimeout(() => {
-                window.location.href = '/auth?mode=login';
+                window.location.href = '/api/account/auth?mode=login';
             }, 1500);
+        } else {
+            this.emit("toast:error", {message:data.message})
         }
     }
 
@@ -109,7 +134,7 @@ class OTPVerifyPage {
         document.querySelector('.otp-card').innerHTML = `
             <h2>Error</h2>
             <p style="color: red;">${message}</p>
-            <a href="/auth?mode=login" class="back-link">Back to Login</a>
+            <a href="/api/account/auth?mode=signup" class="back-link">Back to Login</a>
         `;
     }
 }

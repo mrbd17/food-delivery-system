@@ -15,7 +15,6 @@ __pycache__
 .pytest_cache
 .mypy_cache
 
-# Environment secrets (محلي فقط)
 .env
 .env.local
 .env.production

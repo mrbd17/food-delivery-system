@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from .models import Profile
@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 import logging
 logger = logging.getLogger(__name__)
 
+User = get_user_model()
 class GoogleAuthSerializer(serializers.Serializer):
     token = serializers.CharField(required=True, allow_blank=False)
     mode = serializers.ChoiceField(choices=['login', 'signup'], required=True)
@@ -58,6 +59,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         )
         user.is_active = False
+        user.save(update_fields=["is_active"])
         return user
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -67,9 +69,17 @@ class LoginSerializer(serializers.Serializer):
         email = attrs.get("email")
         password = attrs.get("password")
 
-        logger.info(f"Email {email}")
-        logger.info(password)
+        try: 
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                "Invalid credentials"
+            )
 
+        if not user.is_active:
+            raise serializers.ValidationError(
+                "Account is not activated"
+            )
         user = authenticate(
             username=email,
             password=password
@@ -81,10 +91,7 @@ class LoginSerializer(serializers.Serializer):
                 "Invalid credentials"
             )
             
-        if not user.is_active:
-            raise serializers.ValidationError(
-                "Account is not activated"
-            )
+        
         attrs["user"] = user
         return attrs
     

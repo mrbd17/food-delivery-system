@@ -66,7 +66,7 @@ STORAGES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # LOGGING['loggers']['django']['level'] = 'INFO'
 # LOGGING['loggers']['apps']['level'] = 'INFO'

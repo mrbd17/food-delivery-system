@@ -1,63 +1,42 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Verify Code</title>
-
-    <link rel="stylesheet" href="{% static 'css/auth/reset_password_otp.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - FoodDelivery</title>
+    <link rel="stylesheet" href="/static/css/auth/forgot_password.css">
 </head>
 <body>
 
-<div class="otp-container">
+<div class="reset-card">
+    <h2>Reset Your Password</h2>
+    <p>Enter your email address to receive a verification code</p>
 
-    <h2>Verify Your Email</h2>
-
-    <p>
-        Enter the 6-digit code sent to your email:
-    </p>
-
-    {% if messages %}
-        {% for message in messages %}
-            <div class="otp-error">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <form method="POST" id="otp-form">
-        {% csrf_token %}
-
-        <div class="otp-inputs">
-            {% for i in "123456" %}
-            <input
-                type="text"
-                maxlength="1"
-                inputmode="numeric"
-                class="otp-input"
-                autocomplete="one-time-code"
+    <form id="forgot-password-form">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Enter your email"
+                required
             >
-            {% endfor %}
         </div>
 
-        <!-- Hidden input -->
-        <input type="hidden" name="otp_code" id="otp_code">
-
-        <button type="submit" class="verify-btn">
-            Verify
+        <button type="submit" class="btn btn-primary" id="send-btn">
+            Send Verification Code
         </button>
     </form>
 
-    <form method="POST" action="{% url 'password-reset-resend' %}" id="resend-form">
-        {% csrf_token %}
-        <button type="submit" class="resend-btn">
-            Resend Code
-        </button>
-    </form>
+    <div class="divider">OR</div>
 
+    <a href="/auth?mode=login" class="btn btn-secondary">
+        Back to Login
+    </a>
 </div>
 
-<script src="{% static 'js/auth/password_otp.js' %}"></script>
+<script type="module" src="/static/js/auth/pages/forgot-password.js"></script>
 
 </body>
 </html>

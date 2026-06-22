@@ -12,7 +12,7 @@ export class AuthAPI {
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json",
-                    "X-CSRFToken":this.getCSRFToken,
+                    "X-CSRFToken":this.CSRFToken,
                 },
                 credentials:"include", 
                 body: JSON.stringify({
@@ -58,12 +58,15 @@ export class AuthAPI {
             const result =  await res.json()
             console.log(result)
             console.log(res.status)
+            if (res.status === 409){
+                return result
+            }
 
             if(!res.ok){
                 return {
                     success:false,
                     errors:result.errors || {message:result.message} ||"Unknown error",
-                    message:result.massage
+                    message:result.message
                 }
             }
 

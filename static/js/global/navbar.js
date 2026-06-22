@@ -108,7 +108,9 @@ if (profileBtn){
 }
 
 document.addEventListener("click" , () => {
-  profileDropdown.classList.remove("show");
+  if(profileDropdown){
+    profileDropdown.classList.remove("show");
+  }
 });
 
 if(profileDropdown){

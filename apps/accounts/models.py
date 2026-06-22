@@ -40,7 +40,7 @@ class EmailOTP(models.Model):
     attempts = models.IntegerField(default=0)
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     purpose = models.CharField(
-        max_length=20, choices=[("verify", "Verify Email"), ("reset", "Reset Pessword")]
+        max_length=20, choices=[("verify", "Verify Email"), ("reset", "Reset Password")]
     )
 
     def is_expired(self):

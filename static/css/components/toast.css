@@ -32,11 +32,11 @@
 
 /* Types */
 .toast.success {
-  background: var(--success);
+  background: green;
 }
 
 .toast.error {
-  background: var(--danger);
+  background: red;
 }
 
 /* Animation */
