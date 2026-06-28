@@ -715,6 +715,16 @@ DJANGO_SETTINGS_MODULE = config.settings
 python_files = tests.py test_*.py *_tests.py
 ```
 
+
+## Local Development Setup
+
+### SSL Certificate
+```bash
+# Generate local self-signed certificate:
+.\generate-cert.ps1
+```
+Certificates will be created in `ssl/` folder. **Do NOT commit these to git.**
+
 ### Test Utilities
 
 - **factory-boy**: Model factory fixtures for easy test data creation

@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
+from django.views.generic import TemplateView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
@@ -42,3 +42,5 @@ if "development" in SETTINGS_MODULE:
     urlpatterns += [
         path('silk/', include('silk.urls', namespace='silk')),
     ]
+
+handler404 = TemplateView.as_view(template_name='errors/404.html')

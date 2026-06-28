@@ -30,6 +30,9 @@ CACHES = {
     }
 }
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/2'
 CELERY_ALWAYS_EAGER = False
@@ -37,18 +40,15 @@ CELERY_ALWAYS_EAGER = False
 CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [('redis', 6379)]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'http://frontend:3000',
-    'http://django:8000',
+    'https://localhost',
+    'https://127.0.0.1'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'http://frontend:3000',
+    'https://localhost',
+    'https://127.0.0.1',
 ]
 
 SESSION_COOKIE_SECURE = False
@@ -62,11 +62,11 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage"
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # LOGGING['loggers']['django']['level'] = 'INFO'
 # LOGGING['loggers']['apps']['level'] = 'INFO'
