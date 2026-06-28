@@ -95,3 +95,12 @@ Docker_Complete_Guide_Enhanced.pdf
 trivy.zip
 trivy.exe
 report.json
+
+# ssl/
+nginx/ssl/*
+ssl/*.key
+ssl/*.pfx
+ssl/*.crt
+ssl/*.pem
+
+docs

@@ -4,10 +4,11 @@ import {EventBus} from './eventBus.js';
 
 export class OrderSocket{
     constructor(orderId){
+        this.proto = window.location.protocol === "https:" ? "wss" : "ws";
         this.orderId = orderId;
         this.bus = new EventBus();
         this.core = new SocketCore(
-            `ws://${window.location.host}/ws/orders/${this.orderId}/`
+            `${this.proto}://${window.location.host}/ws/orders/${this.orderId}/`
         );
         this.protocol = new OrderProtocol(this.core, this.bus);
     }
