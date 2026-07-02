@@ -8,7 +8,6 @@ from django.utils import timezone
 
 
 class Profile(models.Model):
-
     ROLE_CHOICES = [
         ("admin", "Admin"),
         ("restaurant", "Restaurant"),

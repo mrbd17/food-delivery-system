@@ -9,21 +9,21 @@ User = get_user_model()
 
 
 class GoogleAuthService:
-
     def __init__(self, client_id=None):
-        self.client_id = client_id or os.getenv('GOOGLE_CLIENT_ID')
+        self.client_id = client_id or os.getenv("GOOGLE_CLIENT_ID")
 
     def verify_token(self, token):
 
         try:
             id_info = id_token.verify_oauth2_token(
-                token,
-                requests.Request(),
-                self.client_id
+                token, requests.Request(), self.client_id
             )
 
-            if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-                raise ValueError('Invalid token issuer')
+            if id_info["iss"] not in [
+                "accounts.google.com",
+                "https://accounts.google.com",
+            ]:
+                raise ValueError("Invalid token issuer")
 
             return id_info
 
@@ -33,21 +33,17 @@ class GoogleAuthService:
 
     def extract_user_data(self, id_info):
 
-        email = id_info.get('email')
-        name = id_info.get('name', '')
+        email = id_info.get("email")
+        name = id_info.get("name", "")
 
         if not email:
-            raise ValueError('Email not provided by Google')
+            raise ValueError("Email not provided by Google")
 
-        return {
-            'email': email,
-            'name': name,
-            'username': email.split('@')[0]
-        }
+        return {"email": email, "name": name, "username": email.split("@")[0]}
 
     def handle_login(self, user_data):
 
-        email = user_data['email']
+        email = user_data["email"]
 
         try:
             user = User.objects.get(email=email)
@@ -55,23 +51,20 @@ class GoogleAuthService:
             return user
 
         except User.DoesNotExist:
-            raise ValueError(f"User not found. Create an account first.")
+            raise ValueError("User not found. Create an account first.")
 
     def handle_signup(self, user_data):
 
-        email = user_data['email']
-        name = user_data['name']
-        username = user_data['username']
+        email = user_data["email"]
+        name = user_data["name"]
+        username = user_data["username"]
 
         if User.objects.filter(email=email).exists():
             raise ValueError("Email already registered. Sign in instead.")
 
         try:
             user = User.objects.create_user(
-                username=username,
-                email=email,
-                first_name=name,
-                password=''
+                username=username, email=email, first_name=name, password=""
             )
             logger.info(f"New user created via Google: {email}")
             return user
@@ -85,9 +78,9 @@ class GoogleAuthService:
         id_info = self.verify_token(token)
         user_data = self.extract_user_data(id_info)
 
-        if mode == 'login':
+        if mode == "login":
             user = self.handle_login(user_data)
-        elif mode == 'signup':
+        elif mode == "signup":
             user = self.handle_signup(user_data)
         else:
             raise ValueError("Invalid mode")

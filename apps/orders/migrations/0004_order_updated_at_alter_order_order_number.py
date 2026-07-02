@@ -6,7 +6,6 @@ import apps.orders.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("orders", "0003_address_full_name"),
     ]
@@ -21,7 +20,9 @@ class Migration(migrations.Migration):
             model_name="order",
             name="order_number",
             field=models.CharField(
-                default=apps.orders.models.generate_order_number, max_length=20, unique=True
+                default=apps.orders.models.generate_order_number,
+                max_length=20,
+                unique=True,
             ),
         ),
     ]

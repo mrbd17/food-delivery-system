@@ -1,24 +1,24 @@
-import uuid
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 
-from apps.menu.models import MenuItem , Category , Restaurant
+from apps.menu.models import MenuItem, Category, Restaurant
 from rest_framework import status
 from .models import Cart, CartItem
 
 
 class TestCartApi(APITestCase):
-
     def setUp(self):
         self.user = User.objects.create_user(username="test", password="1234")
         self.restaurant = Restaurant.objects.create(name="Di-Da")
-        self.category = Category.objects.create(name="Main Meals", restaurant=self.restaurant)
-        self.product = MenuItem.objects.create(name="Bruger", price=100, category=self.category, restaurant=self.restaurant)
+        self.category = Category.objects.create(
+            name="Main Meals", restaurant=self.restaurant
+        )
+        self.product = MenuItem.objects.create(
+            name="Bruger", price=100, category=self.category, restaurant=self.restaurant
+        )
         self.cart = Cart.objects.create(user=self.user)
         self.item = CartItem.objects.create(
-            menu_item=self.product,
-            cart=self.cart,
-            price_snapshot=self.product.price
+            menu_item=self.product, cart=self.cart, price_snapshot=self.product.price
         )
         self.url = "/api/v1/cart/add/"
 
@@ -49,10 +49,7 @@ class TestCartApi(APITestCase):
 
         response = self.client.patch(url, data)
 
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_400_BAD_REQUEST
-        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         print("Status:", response.status_code)
 
