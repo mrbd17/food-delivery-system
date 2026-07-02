@@ -1,8 +1,10 @@
-from django.test import TestCase
-from ..utils import generate_otp, send_otp_email, verify_otp
-from django.contrib.auth.models import User
 from unittest.mock import patch
+
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.test import TestCase
+
+from ..utils import generate_otp, send_otp_email, verify_otp
 
 
 class TestOTPUtilies(TestCase):

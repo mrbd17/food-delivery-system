@@ -1,9 +1,10 @@
-from django.contrib.auth import get_user_model
-from rest_framework import serializers
-from django.contrib.auth.password_validation import validate_password
-from .models import Profile
-from django.contrib.auth import authenticate
 import logging
+
+from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
+
+from .models import Profile
 
 logger = logging.getLogger(__name__)
 

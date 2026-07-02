@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+import time
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-import time
+from django.shortcuts import redirect, render
+
 from ..utils import generate_otp, send_otp_email, verify_otp
 
 User = get_user_model()

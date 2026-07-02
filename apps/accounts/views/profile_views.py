@@ -1,23 +1,21 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from django.shortcuts import render
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model
+from django.shortcuts import render
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from ..models import Profile
 from ..serializers import (
     AccountOverviewSerializer,
-    PersonalInfoSerializer,
-    ChangeNameSerializer,
-    ChangePhoneSerializer,
-    ChangeEmailSerializer,
-    ChangePasswordSerializer,
     AvatarUploadSerializer,
+    ChangeEmailSerializer,
+    ChangeNameSerializer,
+    ChangePasswordSerializer,
+    ChangePhoneSerializer,
+    PersonalInfoSerializer,
 )
-
-from django.contrib.auth import update_session_auth_hash
 
 User = get_user_model()
 
