@@ -42,6 +42,7 @@ CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [('redis', 6379)]
 CORS_ALLOWED_ORIGINS = [
     'https://localhost',
     'https://127.0.0.1'
+    'http://localhost:8000'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -49,6 +50,7 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
     'https://127.0.0.1',
+    'http://localhost:8000'
 ]
 
 SESSION_COOKIE_SECURE = False

@@ -1,0 +1,19 @@
+name: Ci Pipline
+
+on:
+    push: 
+        branches:
+            - main
+    pull_request: 
+        branches:
+            - main
+
+env:
+  REGISTRY: grcr.io
+  IMAGE_NAME: ${{github.repository}}
+
+jobs:
+
+  lint:
+    name: Lint 
+    

@@ -1,10 +1,8 @@
-from django.http import JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.templatetags.static import static
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-
-from .models import MenuItem, Restaurant
+from .models import MenuItem
 from .serializers import GetMenuSerializer
 
 # Create your views here.
@@ -16,6 +14,9 @@ def home(request):
 
 def menu(request):
     return render(request, "pages/menu.html")
+
+def health_check(request):
+    return HttpResponse("ok")
 
 
 class GetMenuView(generics.ListAPIView):

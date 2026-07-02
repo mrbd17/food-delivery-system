@@ -588,7 +588,7 @@ button[type="submit"]:active:not(:disabled) {
 @media (max-width: 860px) {
   .container {
     width: 96%;
-    min-height: auto;
+    min-height: 650px;
   }
 }
 

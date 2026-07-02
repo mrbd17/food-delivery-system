@@ -43,4 +43,5 @@ if "development" in SETTINGS_MODULE:
         path('silk/', include('silk.urls', namespace='silk')),
     ]
 
+
 handler404 = TemplateView.as_view(template_name='errors/404.html')
