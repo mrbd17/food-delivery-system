@@ -6,7 +6,7 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config("SECRET_KEY")
 
 INSTALLED_APPS = [
     "daphne",
@@ -43,15 +43,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-X_FRAME_OPTIONS = 'SAMEORIGIN'
-SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 SECURE_CONTENT_SECURITY_POLICY = {
-    'default-src': ("'self'",),
-    'script-src': ("'self'", "accounts.google.com"),
-    'frame-src': ("'self'", "accounts.google.com"),
-    'connect-src': ("'self'", "accounts.google.com"),
-    'img-src': ("'self'", "https:"),
+    "default-src": ("'self'",),
+    "script-src": ("'self'", "accounts.google.com"),
+    "frame-src": ("'self'", "accounts.google.com"),
+    "connect-src": ("'self'", "accounts.google.com"),
+    "img-src": ("'self'", "https:"),
 }
 
 ROOT_URLCONF = "config.urls"
@@ -76,9 +76,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 
-
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -91,12 +92,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle"
+        "rest_framework.throttling.UserRateThrottle",
     ],
-    "DEFAULT_THROTTLE_RATES": {
-        "anon": "10/minute",
-        "user": "30/minute"
-    }
+    "DEFAULT_THROTTLE_RATES": {"anon": "10/minute", "user": "30/minute"},
 }
 
 SIMPLE_JWT = {
@@ -112,12 +110,12 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_SAVE_EVERY_REQUEST = False
 
-CELERY_BROKER_URL = config('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
@@ -125,8 +123,10 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [config('REDIS_CHANNEL_HOST', default='localhost'), 
-                     int(config('REDIS_CHANNEL_PORT', default='6379'))],
+            "hosts": [
+                config("REDIS_CHANNEL_HOST", default="localhost"),
+                int(config("REDIS_CHANNEL_PORT", default="6379")),
+            ],
             "capacity": 1500,
             "expiry": 10,
         },
@@ -141,11 +141,11 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTHENTICATION_BACKENDS = [
@@ -170,7 +170,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #             "format": "{levelname} {asctime} {module} {message}",
 #             "style": "{",
 #         },
-#     }, 
+#     },
 #     "handlers": {
 #         "console": {
 #             "class": "logging.StreamHandler",

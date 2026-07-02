@@ -15,6 +15,7 @@ def home(request):
 def menu(request):
     return render(request, "pages/menu.html")
 
+
 def health_check(request):
     return HttpResponse("ok")
 
@@ -22,5 +23,6 @@ def health_check(request):
 class GetMenuView(generics.ListAPIView):
     serializer_class = GetMenuSerializer
     permission_classes = [AllowAny]
+
     def get_queryset(self):
         return MenuItem.objects.filter(is_menu=True)

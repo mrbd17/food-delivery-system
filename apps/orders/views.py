@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django_countries import countries
 from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import OR, AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,16 +13,13 @@ from .models import Address, Order
 from .order_service import cancel_order, create_order, update_order_status
 from .serializers import (
     AddressSerializer,
-    CancelOrderSerializer,
     CreateOrderSerializer,
-    OrderItemSerializer,
     OrderSerializer,
     UpdateOrderSerializer,
 )
 
 
 class CountryListAPIView(APIView):
-
     def get(self, request):
 
         cached = cache.get("countries_list")
@@ -38,7 +35,6 @@ class CountryListAPIView(APIView):
 
 
 class DetectCountryAPIView(APIView):
-
     def get(self, request):
         ip = request.META.get("REMOTE_ADDR")
 
@@ -49,7 +45,7 @@ class DetectCountryAPIView(APIView):
             return Response(cached)
 
         try:
-            response = requests.get(f"https://ipinfo.io/json")
+            response = requests.get("https://ipinfo.io/json")
             data = response.json()
 
             results = {

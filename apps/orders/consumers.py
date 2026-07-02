@@ -7,7 +7,6 @@ from .models import Order
 
 
 class OrderConsumer(AsyncWebsocketConsumer):
-
     async def connect(self):
         print("connected hit")
         self.user = self.scope["user"]

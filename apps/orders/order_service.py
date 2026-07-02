@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -66,9 +65,7 @@ def create_order(user, payment_method, delivery_address_id):
 
     OrderItem.objects.bulk_create(order_items)
     cart.clear()
-    transaction.on_commit(
-        lambda: send_order_confirmation_email.delay(order.id)
-    )
+    transaction.on_commit(lambda: send_order_confirmation_email.delay(order.id))
     return order
 
 

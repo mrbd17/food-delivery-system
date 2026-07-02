@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []
@@ -77,12 +76,15 @@ class Migration(migrations.Migration):
                 (
                     "name",
                     models.CharField(
-                        help_text="Ø§Ø³Ù… Ø§Ù„ÙˆØ¬Ø¨Ø© Ù…Ø«Ù„ Burger Ø£Ùˆ Pizza", max_length=100
+                        help_text="Ø§Ø³Ù… Ø§Ù„ÙˆØ¬Ø¨Ø© Ù…Ø«Ù„ Burger Ø£Ùˆ Pizza",
+                        max_length=100,
                     ),
                 ),
                 (
                     "description",
-                    models.TextField(blank=True, help_text="ÙˆØµÙ Ø§Ù„ÙˆØ¬Ø¨Ø©", null=True),
+                    models.TextField(
+                        blank=True, help_text="ÙˆØµÙ Ø§Ù„ÙˆØ¬Ø¨Ø©", null=True
+                    ),
                 ),
                 (
                     "price",

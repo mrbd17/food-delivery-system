@@ -4,12 +4,15 @@ from django.contrib.auth.password_validation import validate_password
 from .models import Profile
 from django.contrib.auth import authenticate
 import logging
+
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
+
+
 class GoogleAuthSerializer(serializers.Serializer):
     token = serializers.CharField(required=True, allow_blank=False)
-    mode = serializers.ChoiceField(choices=['login', 'signup'], required=True)
+    mode = serializers.ChoiceField(choices=["login", "signup"], required=True)
 
     def validate_token(self, value):
         if not value or len(value) < 10:
@@ -17,10 +20,9 @@ class GoogleAuthSerializer(serializers.Serializer):
         return value
 
     def validate_mode(self, value):
-        if value not in ['login', 'signup']:
+        if value not in ["login", "signup"]:
             raise serializers.ValidationError("Mode must be 'Login' or 'Signup'")
         return value
-    
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -30,37 +32,40 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
-
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        ]
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError(
-                "Email already exists"
-            )
+            raise serializers.ValidationError("Email already exists")
         return value
-        
+
     def validate(self, attrs):
         if attrs["password1"] != attrs["password2"]:
-            raise serializers.ValidationError(
-                {"password2": "passwords dose'nt match"}
-            )
+            raise serializers.ValidationError({"password2": "passwords dose'nt match"})
         validate_password(attrs["password1"])
 
         return attrs
-    
-    def create(self , validate_data):
+
+    def create(self, validate_data):
         user = User.objects.create_user(
             username=validate_data["email"],
             email=validate_data["email"],
             first_name=validate_data["first_name"],
             last_name=validate_data["last_name"],
-            password=validate_data["password1"]
-        
+            password=validate_data["password1"],
         )
         user.is_active = False
         user.save(update_fields=["is_active"])
         return user
+
+
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
@@ -69,32 +74,21 @@ class LoginSerializer(serializers.Serializer):
         email = attrs.get("email")
         password = attrs.get("password")
 
-        try: 
+        try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise serializers.ValidationError(
-                "Invalid credentials"
-            )
+            raise serializers.ValidationError("Invalid credentials")
 
         if not user.is_active:
-            raise serializers.ValidationError(
-                "Account is not activated"
-            )
-        user = authenticate(
-            username=email,
-            password=password
-        )
-        
+            raise serializers.ValidationError("Account is not activated")
+        user = authenticate(username=email, password=password)
 
         if not user:
-            raise serializers.ValidationError(
-                "Invalid credentials"
-            )
-            
-        
+            raise serializers.ValidationError("Invalid credentials")
+
         attrs["user"] = user
         return attrs
-    
+
 
 class UserMiniSerializer(serializers.ModelSerializer):
     role = serializers.CharField(source="profile.role")
@@ -147,7 +141,6 @@ class PersonalInfoSerializer(serializers.ModelSerializer):
 
 
 class ChangeNameSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = [
@@ -171,23 +164,18 @@ class ChangePhoneSerializer(serializers.Serializer):
 
 
 class ChangeEmailSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ["email"]
 
 
 class AvatarUploadSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Profile
         fields = ["avatar"]
 
-        
-
 
 class ChangePasswordSerializer(serializers.Serializer):
-
     current_password = serializers.CharField()
     new_password = serializers.CharField(min_length=8)
 

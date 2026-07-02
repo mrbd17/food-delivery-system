@@ -15,5 +15,16 @@ env:
 jobs:
 
   lint:
-    name: Lint 
-    
+    name: Lint & Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          

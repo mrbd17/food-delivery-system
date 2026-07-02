@@ -38,7 +38,6 @@ def add_to_cart(product_id, user=None, guest_id=None):
     if not created:
         cart_item.quantity += 1
         cart_item.save(update_fields=["quantity"])
-        
 
     return cart_item
 

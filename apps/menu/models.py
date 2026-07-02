@@ -20,7 +20,6 @@ class Restaurant(models.Model):
 
 
 class Category(models.Model):
-
     CATEGORY_CHOICES = [
         ("drinks", "Drinks"),
         ("main", "Main Meals"),
@@ -28,10 +27,7 @@ class Category(models.Model):
         ("snacks", "Snacks"),
         ("salads", "Salads"),
     ]
-    name = models.CharField(
-        max_length=50,
-        choices=CATEGORY_CHOICES
-    )
+    name = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     restaurant = models.ForeignKey(
         Restaurant, on_delete=models.CASCADE, related_name="categories"
     )
@@ -48,9 +44,7 @@ class MenuItem(models.Model):
     )
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(
-        max_digits=6, decimal_places=2
-    )
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     img = models.ImageField(upload_to="menu_images/", null=True, blank=True)
     is_menu = models.BooleanField(default=True)
 

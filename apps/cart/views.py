@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -10,7 +9,6 @@ make a comment for just testing git
 
 from .cart_service import (
     add_to_cart,
-    clear_cart,
     get_or_create_active_cart,
     remove_cart_item,
     update_cart_item,
@@ -19,7 +17,6 @@ from .serializers import (
     AddToCartSerializer,
     CartItemSerializer,
     CartSerializer,
-    MenuItemSerializer,
     UpdateItemCartSerializer,
     removeitemserializers,
 )
