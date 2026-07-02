@@ -91,7 +91,7 @@ jobs:
           python -m pip install upgrade pip
           pip install requirements/dev.txt
         
-      - nema: Run Migrations
+      - name: Run Migrations
         env:
           DEBUG: False 
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/food_delivery_test
