@@ -38,6 +38,8 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+.ruff_cache
+
 # Django
 *.log
 local_settings.py
