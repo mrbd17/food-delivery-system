@@ -5,10 +5,11 @@ from channels.layers import get_channel_layer
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.shortcuts import get_object_or_404
-from .tasks import send_order_confirmation_email
+
 from apps.cart.models import Cart
 
 from .models import Address, Order, OrderItem
+from .tasks import send_order_confirmation_email
 
 
 def notify_update_status(order):

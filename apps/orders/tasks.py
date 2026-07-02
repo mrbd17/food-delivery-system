@@ -1,5 +1,6 @@
-from celery import shared_task
 import logging
+
+from celery import shared_task
 
 logger = logging.getLogger(__name__)
 
@@ -8,9 +9,10 @@ logger = logging.getLogger(__name__)
 def send_order_confirmation_email(self, order_id):
 
     try:
-        from .models import Order
-        from django.core.mail import send_mail
         from django.conf import settings
+        from django.core.mail import send_mail
+
+        from .models import Order
 
         logger.info(f"starting email task for order {order_id}")
 

@@ -1,8 +1,9 @@
+import logging
+import os
+
 from django.contrib.auth import get_user_model
 from google.auth.transport import requests
 from google.oauth2 import id_token
-import os
-import logging
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -28,7 +29,7 @@ class GoogleAuthService:
             return id_info
 
         except ValueError as e:
-            logger.warning(f"Token verification failed: {str(e)}")
+            logger.warning(f"Token verification failed: {e!s}")
             raise
 
     def extract_user_data(self, id_info):
@@ -70,7 +71,7 @@ class GoogleAuthService:
             return user
 
         except Exception as e:
-            logger.error(f"Failed to create user: {str(e)}")
+            logger.error(f"Failed to create user: {e!s}")
             raise ValueError("Failed to create user account")
 
     def authenticate(self, token, mode):

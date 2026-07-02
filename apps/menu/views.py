@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
+
 from .models import MenuItem
 from .serializers import GetMenuSerializer
 

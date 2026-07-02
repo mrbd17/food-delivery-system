@@ -1,17 +1,21 @@
-from django.shortcuts import render
-from django.contrib.auth import login as auth_login, logout as auth_logout
-from django.contrib.auth import get_user_model
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from django.middleware.csrf import get_token
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from rest_framework.throttling import AnonRateThrottle
-from ..google_service import GoogleAuthService
-from ..serializers import RegisterSerializer, LoginSerializer, GoogleAuthSerializer
-from django.views.decorators.clickjacking import xframe_options_exempt
 import logging
+
+from django.contrib.auth import (
+    get_user_model,
+    login as auth_login,
+    logout as auth_logout,
+)
+from django.middleware.csrf import get_token
+from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_exempt
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
+from rest_framework.views import APIView
+
+from ..google_service import GoogleAuthService
+from ..serializers import GoogleAuthSerializer, LoginSerializer, RegisterSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -67,14 +71,14 @@ class GoogleAuth(APIView):
             )
 
         except ValueError as e:
-            logger.warning(f"Google auth error: {str(e)}")
+            logger.warning(f"Google auth error: {e!s}")
             return Response(
                 {"success": False, "message": str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         except Exception as e:
-            logger.error(f"Unexpected error in google_auth: {str(e)}")
+            logger.error(f"Unexpected error in google_auth: {e!s}")
             return Response(
                 {"success": False, "message": "Server error"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,

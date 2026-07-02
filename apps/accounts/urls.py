@@ -4,9 +4,6 @@ from .views import (
     auth_views as auth,
     email_verification_views as email,
     password_reset_views as password,
-)
-
-from .views import (
     profile_views as profile,
 )
 
