@@ -132,7 +132,7 @@ jobs:
           cache-dependency-path: requirements/dev.txt
 
       - name: Install Dependencies
-        ruun: |
+        run: |
           python -m pip intall --upgrade pip
           pip install requirements/dev.txt
           pip install bandit safety
