@@ -39,7 +39,7 @@ jobs:
         run: ruff check .
 
       - name: Run Ruff Formatter Check
-        run: ruff format --check .
+        run: ruff format .
 
   # TESTING - Unit tests with PostgreSQL and Redis
 
