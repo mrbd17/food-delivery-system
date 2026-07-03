@@ -1,20 +1,21 @@
-name: Ci Pipline
+name: CI Pipeline
 
 on:
-    push: 
-        branches:
-            - main
-    pull_request: 
-        branches:
-            - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{github.repository}}
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-
-# linting
+  # ============================================================================
+  # LINTING - Code quality checks
+  # ============================================================================
 
   lint:
     name: Lint & Code Quality
@@ -23,135 +24,214 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      
-      - name: Set up Python
+
+      - name: Set Up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
           cache-dependency-path: requirements/dev.txt
-          
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements/dev.txt
 
-      - name: Run Ruff
-        run :  ruff format --check .
-      
-      - name: Check Formater (with Ruff)
-        run : ruff format --check .
-      
-# test 
+      - name: Run Ruff Linter
+        run: ruff check fooddelivery/
+
+      - name: Run Ruff Formatter Check
+        run: ruff format --check fooddelivery/
+
+  # ============================================================================
+  # TESTING - Unit tests with PostgreSQL and Redis
+  # ============================================================================
 
   test:
-    name: Test code
+    name: Tests & Coverage
     runs-on: ubuntu-latest
 
     services:
-      #DB
       postgres:
         image: postgres:15-alpine
         env:
           POSTGRES_DB: food_delivery_test
           POSTGRES_USER: test_user
           POSTGRES_PASSWORD: test_password
-        options: >- 
+        options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
-        ports: 
+        ports:
           - 5432:5432
-      # Redis
+
       redis:
         image: redis:7-alpine
-        options: >- 
+        options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
           - 6379:6379
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set Up Python
         uses: actions/setup-python@v5
-        with: 
-          python-version: '3.11'
-          cache: 'pip'
+        with:
+          python-version: "3.11"
+          cache: "pip"
           cache-dependency-path: requirements/dev.txt
-        
+
       - name: Install Dependencies
         run: |
-          python -m pip install upgrade pip
-          pip install requirements/dev.txt
-        
-      - name: Run Migrations
+          python -m pip install --upgrade pip
+          pip install -r requirements/dev.txt
+
+      - name: Run Database Migrations
         env:
-          DEBUG: False 
+          DEBUG: "False"
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/food_delivery_test
-          SECRET_KEY: test-secret-key
-          REDIS_oRL: redis://localhost:6379/0
+          SECRET_KEY: test-secret-key-only-for-ci
+          REDIS_URL: redis://localhost:6379/0
         run: python manage.py migrate
 
-      - name: Run Unit Tests with Converage
-        env: 
-          DEBUG: False
+      - name: Run Tests with Coverage
+        env:
+          DEBUG: "False"
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/food_delivery_test
-          SECRET_KEY: test-secret-key
+          SECRET_KEY: test-secret-key-only-for-ci
           REDIS_URL: redis://localhost:6379/0
-        run: |
-          pytest --cov=. --cov-report=xml --cov-report=term-missing -v
+        run: pytest --cov=fooddelivery --cov-report=xml --cov-report=term-missing -v
 
-      - name: Upload Coverage Reports
+      - name: Upload Coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage.xml
           flags: unittests
           fail_ci_if_error: false
-          
+
+  # ============================================================================
+  # SECURITY - Bandit, pip-audit, and secrets detection
+  # ============================================================================
+
   security:
-    name: Security Checks
+    name: Security Scanning
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: action/setup-checkout@v4
+        uses: actions/checkout@v4
 
       - name: Set Up Python
         uses: actions/setup-python@v5
-        with: 
-          python-version: '3.11'
-          pip: cache
+        with:
+          python-version: "3.11"
+          cache: "pip"
           cache-dependency-path: requirements/dev.txt
 
-      - name: Install Dependencies
+      - name: Install Security Tools
         run: |
-          python -m pip intall --upgrade pip
-          pip install requirements/dev.txt
-          pip install bandit safety
-          pip install pip-audit
+          python -m pip install --upgrade pip
+          pip install -r requirements/dev.txt
+          pip install bandit safety pip-audit
 
-      - name: Run Bandit 
+      - name: Run Bandit Security Scanner
         run: |
-          bandit -r . -f json -o bandit-report.json || true
-          bandit -r . -f txt
-      
-      - name: Check for Known Vulernablilities
-        run: |
-          pip-audit --skip-editable || true
-      
-      - name: Detect Secrets
+          bandit -r fooddelivery/ -f json -o bandit-report.json || true
+          bandit -r fooddelivery/ -f txt
+
+      - name: Check for Known Vulnerabilities
+        run: pip-audit --skip-editable || true
+
+      - name: Detect Secrets in Repository
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ${{github.event.repository.default_branch}}
+          base: ${{ github.event.repository.default_branch }}
           head: HEAD
-        
 
+  # ============================================================================
+  # BUILD - Docker image creation (only on main branch)
+  # ============================================================================
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [lint, test, security]
+
+    permissions:
+      contents: read
+      packages: write
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log In to Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=sha,prefix=
+            type=semver,pattern={{version}}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ============================================================================
+  # SCAN - Container image vulnerability scanning
+  # ============================================================================
+
+  scan:
+    name: Scan Docker Image
+    runs-on: ubuntu-latest
+    needs: build
+
+    permissions:
+      contents: read
+      packages: read
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Scan Image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+
+      - name: Upload Trivy Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
