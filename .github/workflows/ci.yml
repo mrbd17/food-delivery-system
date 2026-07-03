@@ -90,6 +90,7 @@ jobs:
 
       - name: Run Database Migrations
         env:
+          DJANGO_SETTINGS_MODULE: config.settings.test
           DEBUG: "False"
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/food_delivery_test
           SECRET_KEY: test-secret-key-only-for-ci
