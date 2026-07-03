@@ -36,10 +36,10 @@ jobs:
           pip install -r requirements/dev.txt
 
       - name: Run Ruff Linter
-        run: ruff check fooddelivery/
+        run: ruff check .
 
       - name: Run Ruff Formatter Check
-        run: ruff format --check fooddelivery/
+        run: ruff format --check .
 
   # TESTING - Unit tests with PostgreSQL and Redis
 
