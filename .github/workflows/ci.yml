@@ -8,16 +8,13 @@ on:
     branches:
       - main
 
-
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  # ============================================================================
+  
   # LINTING - Code quality checks
-  # ============================================================================
-
   lint:
     name: Lint & Code Quality
     runs-on: ubuntu-latest
@@ -44,9 +41,7 @@ jobs:
       - name: Run Ruff Formatter Check
         run: ruff format --check fooddelivery/
 
-  # ============================================================================
   # TESTING - Unit tests with PostgreSQL and Redis
-  # ============================================================================
 
   test:
     name: Tests & Coverage
@@ -117,9 +112,7 @@ jobs:
           flags: unittests
           fail_ci_if_error: false
 
-  # ============================================================================
   # SECURITY - Bandit, pip-audit, and secrets detection
-  # ============================================================================
 
   security:
     name: Security Scanning
@@ -157,9 +150,7 @@ jobs:
           base: ${{ github.event.repository.default_branch }}
           head: HEAD
 
-  # ============================================================================
   # BUILD - Docker image creation (only on main branch)
-  # ============================================================================
 
   build:
     name: Build Docker Image
@@ -207,10 +198,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ============================================================================
   # SCAN - Container image vulnerability scanning
-  # ============================================================================
-
   scan:
     name: Scan Docker Image
     runs-on: ubuntu-latest
