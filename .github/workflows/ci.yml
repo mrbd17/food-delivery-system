@@ -116,5 +116,42 @@ jobs:
           flags: unittests
           fail_ci_if_error: false
           
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout Code
+        uses: action/setup-checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.11'
+          pip: cache
+          cache-dependency-path: requirements/dev.txt
+
+      - name: Install Dependencies
+        ruun: |
+          python -m pip intall --upgrade pip
+          pip install requirements/dev.txt
+          pip install bandit safety
+          pip install pip-audit
+
+      - name: Run Bandit 
+        run: |
+          bandit -r . -f json -o bandit-report.json || true
+          bandit -r . -f txt
+      
+      - name: Check for Known Vulernablilities
+        run: |
+          pip-audit --skip-editable || true
+      
+      - name: Detect Secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{github.event.repository.default_branch}}
+          head: HEAD
+        
 

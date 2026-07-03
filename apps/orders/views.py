@@ -150,7 +150,7 @@ class CancelOrderView(APIView):
 
         return Response(
             {
-                "message": "Order was Cancelled",
+                "message": "Order was Canncelled",
                 "order_id": order.id,
             }
         )
