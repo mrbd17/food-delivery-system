@@ -1,7 +1,7 @@
 import requests
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django_countries import countries
 from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
@@ -20,7 +20,7 @@ from .serializers import (
 
 
 class CountryListAPIView(APIView):
-    def get(self, request):
+    def get(self):
 
         cached = cache.get("countries_list")
 
@@ -67,8 +67,7 @@ def checkoutpage(request):
 
 
 @login_required
-def track_order_page(request, pk):
-    order = get_object_or_404(Order, id=pk, user=request.user)
+def track_order_page(request):
     return render(request, "ordertracking.html")
 
 
