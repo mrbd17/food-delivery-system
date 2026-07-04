@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from accounts.models import EmailOTP, Profile
+from .models import EmailOTP, Profile
 
 # Register your models here.
 

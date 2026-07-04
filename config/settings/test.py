@@ -1,12 +1,11 @@
-import os
-from .base import *
-
 import tempfile
+
+from .base import *  # noqa: F403
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',  # الـ colon = memory, not disk
+        'NAME': ':memory:',
     }
 }
 
