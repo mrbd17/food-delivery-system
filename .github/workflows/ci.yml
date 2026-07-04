@@ -163,7 +163,7 @@ jobs:
       contents: read
       packages: write
 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' 
 
     steps:
       - name: Checkout Code
@@ -210,8 +210,7 @@ jobs:
       contents: read
       packages: read
 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
+    if: github.event_name == 'push'
     steps:
       - name: Scan Image with Trivy
         uses: aquasecurity/trivy-action@master
