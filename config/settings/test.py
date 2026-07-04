@@ -58,10 +58,14 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
 
-
-AUTH_PASSWORD_VALIDATORS = []  # Disable password complexity في testing
-
-
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
 MEDIA_ROOT = tempfile.mkdtemp()  # Temporary directory، يُحذف بعد tests
 MEDIA_URL = '/media/'
 
