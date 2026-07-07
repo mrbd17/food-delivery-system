@@ -13,6 +13,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.throttling import AnonRateThrottle
 
 from ..google_service import GoogleAuthService
 from ..serializers import GoogleAuthSerializer, LoginSerializer, RegisterSerializer
@@ -84,7 +85,7 @@ class GoogleAuth(APIView):
 
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
-    # throttle_classes = [AnonRateThrottle]
+    throttle_classes = [AnonRateThrottle]
 
     def post(self, request):
         email = request.data.get("email")
@@ -114,7 +115,7 @@ class RegisterAPIView(APIView):
 
 class LoginAPIView(APIView):
     permission_classes = [AllowAny]
-    # throttle_classes = [AnonRateThrottle]
+    throttle_classes = [AnonRateThrottle]
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)

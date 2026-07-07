@@ -2,7 +2,7 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: fooddelivery-db
+    container_name: db
     env_file:
       - .env.docker
     volumes:
@@ -19,7 +19,7 @@ services:
     
   redis:
     image: redis:7-alpine
-    container_name: fooddelivery-redis
+    container_name: redis
     ports:
       - "6379:6379"
     healthcheck:
@@ -63,7 +63,7 @@ services:
     
   celery:
     build: .
-    container_name: fooddelivery-celery
+    container_name: celery
     command: celery -A config worker -l info -P solo -Q emails 
     environment:
       - PYTHONUNBUFFERED=1
@@ -79,7 +79,7 @@ services:
 
   celery-beat:
     build: .
-    container_name: fooddelivery-celery-beat
+    container_name: celery-beat
     command: celery -A config beat -l info  
     environment:
       - PYTHONUNBUFFERED=1
@@ -95,7 +95,7 @@ services:
 
   nginx:
     image: nginx:1.30-alpine
-    container_name: fooddelivery-nginx
+    container_name: nginx
     env_file:
       - .env.docker
     ports:
