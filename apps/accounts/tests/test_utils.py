@@ -12,7 +12,7 @@ class TestOTPUtilies(TestCase):
         self.user = User.objects.create_user(
             username="mahmoud", email="mahmoud@gmail.com", password="12345"
         )
-    @patch("accounts.utils.random.randint")
+    @patch("apps.accounts.utils.random.randint")
     def test_generate_otp(self, mock_randint):
 
         mock_randint.return_value = "123456"
