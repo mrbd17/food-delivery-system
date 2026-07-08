@@ -12,17 +12,30 @@ class TestOTPUtilies(TestCase):
         self.user = User.objects.create_user(
             username="mahmoud", email="mahmoud@gmail.com", password="12345"
         )
-
-    @patch("apps.accounts.utils.random.randint")
+    @patch("accounts.utils.random.randint")
     def test_generate_otp(self, mock_randint):
 
         mock_randint.return_value = "123456"
 
-        email_otp = generate_otp(user=self.user, purpose="verify")
-        self.assertEqual(email_otp.user, self.user)
-        self.assertEqual(email_otp.otp, "123456")
-        self.assertEqual(email_otp.purpose, "verify")
-        # self.assertFalse(email_otp.is_verified)
+        email_otp = generate_otp(
+            user= self.user,
+            purpose="verify"
+        )
+        self.assertEqual(
+            email_otp.user,
+            self.user
+        )
+        self.assertEqual(
+            email_otp.otp,
+            "123456"
+        )
+        self.assertEqual(
+            email_otp.purpose,
+            "verify"
+        )
+        self.assertFalse(
+            email_otp.is_verified
+        )
 
     @patch("apps.accounts.utils.send_mail")
     def test_send_otp_email(self, mock_send_mail):

@@ -1,11 +1,8 @@
-import logging
-
-from django.contrib.auth import (
-    get_user_model,
-    login as auth_login,
-    logout as auth_logout,
-)
-from django.http import JsonResponse
+from django.shortcuts import render
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from django.middleware.csrf import get_token
 from django.shortcuts import render
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -29,6 +26,8 @@ def auth_page(request):
     get_token(request)
     return render(request, "auth/auth.html")
 
+
+from django.http import JsonResponse
 
 def google_callback(request):
     return JsonResponse({"message": "Google callback reached"})
