@@ -61,6 +61,7 @@ services:
     networks:
       - fooddelivery-network
     
+    
   celery:
     build: .
     container_name: celery
