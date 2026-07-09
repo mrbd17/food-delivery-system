@@ -116,6 +116,7 @@ jobs:
 
   # SECURITY - Bandit, pip-audit, and secrets detection
 
+
   security:
     name: Security Scanning
     runs-on: ubuntu-latest
