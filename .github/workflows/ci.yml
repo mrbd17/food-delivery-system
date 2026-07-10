@@ -206,7 +206,7 @@ jobs:
           echo "${{steps.meta.outputs.tags}}"
   # SCAN - Container image vulnerability scanning
 
-scan:
+  scan:
     name: Scan Docker Image
     runs-on: ubuntu-latest
     needs: build
