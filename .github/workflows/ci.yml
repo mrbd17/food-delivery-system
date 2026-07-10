@@ -218,14 +218,11 @@ jobs:
 
     if: github.event_name == 'push'
     steps:
-      - name: Scan Image with Trivy
+      - name: Check Trivy
         uses: aquasecurity/trivy-action@v0.33.1
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: sarif
-          output: trivy-results.sarif
-          # severity: CRITICAL,HIGH
-
+          scan-type: fs
+          scan-ref: .
 
       - name: Upload Trivy Results to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
