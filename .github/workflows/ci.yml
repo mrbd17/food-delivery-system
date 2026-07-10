@@ -218,11 +218,21 @@ jobs:
 
     if: github.event_name == 'push'
     steps:
-      - name: Check Trivy
+      - name: Log In to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Scan Image with Trivy
         uses: aquasecurity/trivy-action@v0.33.1
         with:
-          scan-type: fs
-          scan-ref: .
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: sarif
+          output: trivy-results.sarif
+          # severity: CRITICAL,HIGH
+
 
       - name: Upload Trivy Results to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
