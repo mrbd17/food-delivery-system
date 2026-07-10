@@ -189,7 +189,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-
-            type=raw,value${{github.sha}}
+            type=raw,value=${{github.sha}}
             type=semver,pattern={{version}}
 
       - name: Build and Push Docker Image
@@ -201,9 +201,11 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+      - name: Print Tags
+        run: |
+          echo "${{steps.meta.outputs.tags}}"
   # SCAN - Container image vulnerability scanning
-  
+
   scan:
     name: Scan Docker Image
     runs-on: ubuntu-latest
@@ -212,6 +214,7 @@ jobs:
     permissions:
       contents: read
       packages: read
+      security-events: write
 
     if: github.event_name == 'push'
     steps:
