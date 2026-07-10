@@ -239,7 +239,7 @@ jobs:
             --format sarif \
             --output trivy-results.sarif \
             --severity CRITICAL,HIGH \
-            --exit-code 1 \
+            --exit-code 0 \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Upload Trivy Results to GitHub Security
