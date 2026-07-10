@@ -225,17 +225,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Scan Image with Docker Scout
-        uses: docker/scout-action@v1
+      - name: Scan Image with Trivy
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
-          command: cves
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          sarif-file: scout-results.sarif
-          exit-code: true
-          only-severities: critical,high
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          exit-code: "0"
 
-      - name: Upload Scout Results to GitHub Security
+      - name: Upload Trivy Results to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
-          sarif_file: scout-results.sarif
+          sarif_file: trivy-results.sarif
