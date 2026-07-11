@@ -18,8 +18,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.registory }}
-
+  IMAGE_NAME: ${{ github.repository }}
   APP_DIR: /home/${{ github.actor }}/deployments/food-delivery-system
   HEALTH_URL: https://localhost/api/health
 
@@ -27,33 +26,42 @@ permissions:
   contents: read
 
 jobs:
-
   prepare-deployment:
-    name: PrePare Deployment Metadata
+    name: Prepare Deployment Metadata
     runs-on: ubuntu-latest
-    if: > 
-      github.event-name == 'workflow_dispatch' ||
+
+    if: >
+      github.event_name == 'workflow_dispatch' ||
       github.event.workflow_run.conclusion == 'success'
 
     permissions:
       contents: read
       packages: read
-    
+
     outputs:
       image_tag: ${{ steps.metadata.outputs.image_tag }}
-      short_sha : ${{ steps.metadata.outputs.short_sha }}
+      short_sha: ${{ steps.metadata.outputs.short_sha }}
       image_digest: ${{ steps.verify.outputs.digest }}
-    
+
     steps:
-      - name: Resolve image tag 
+      - name: Resolve image tag
         id: metadata
-        run: | 
-          SHA="${{ github.event.inputs.image_tag || github.event.workflow_run.head_sha }}"
-          if [ -z "SHA" ]; then
-            echo "::error::No commit SHA resolved, cannot continue"
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SHA="${{ github.event.inputs.image_tag }}"
+          else
+            SHA="${{ github.event.workflow_run.head_sha }}"
+          fi
+
+          if [ -z "$SHA" ]; then
+            echo "::error::No commit SHA resolved"
             exit 1
           fi
-          echo "image_tag=${SHA}" >> "$GITHUB_OUTPUT"
+
+          echo "image_tag=$SHA" >> "$GITHUB_OUTPUT"
           echo "short_sha=${SHA:0:7}" >> "$GITHUB_OUTPUT"
  
       - name: Log in to Container Registry
