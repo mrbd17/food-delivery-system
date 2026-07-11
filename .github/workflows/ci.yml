@@ -214,7 +214,7 @@ jobs:
     permissions:
       contents: read
       packages: read
-      # security-events: write
+      security-events: write
 
     if: github.event_name == 'push'
     steps:
