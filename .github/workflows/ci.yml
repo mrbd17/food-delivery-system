@@ -239,7 +239,7 @@ jobs:
             --format sarif \
             --output trivy-results.sarif \
             --severity CRITICAL,HIGH \
-            --exit-code 0 \
+            --exit-code 1 \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Upload Trivy Results to GitHub Security
@@ -247,3 +247,4 @@ jobs:
         if: always()
         with:
           sarif_file: trivy-results.sarif
+
