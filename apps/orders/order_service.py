@@ -39,7 +39,7 @@ def create_order(user, payment_method, delivery_address_id):
     address = get_object_or_404(Address, id=delivery_address_id, user=user)
 
     subtotal = cart.subtotal
-    tax = subtotal * Decimal(0.08)
+    tax = subtotal * Decimal("0.08")
     total = subtotal + tax
 
     order = Order.objects.create(

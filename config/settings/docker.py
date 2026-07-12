@@ -40,7 +40,10 @@ CELERY_ALWAYS_EAGER = False
 
 CHANNEL_LAYERS["default"]["CONFIG"]["hosts"] = [("redis", 6379)]
 
-CORS_ALLOWED_ORIGINS = ["https://localhost", "https://127.0.0.1http://localhost:8000"]
+CORS_ALLOWED_ORIGINS = [
+    'https://localhost',
+    'https://127.0.0.1'
+]
 
 CORS_ALLOW_CREDENTIALS = True
 

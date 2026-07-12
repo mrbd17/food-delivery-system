@@ -78,7 +78,9 @@ class LoginSerializer(serializers.Serializer):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise serializers.ValidationError("Invalid credentials")
+            raise serializers.ValidationError(
+                "Invalid credentials"
+            )
 
         if not user.is_active:
             raise serializers.ValidationError("Account is not activated")

@@ -57,7 +57,7 @@ class OrderConsumer(AsyncWebsocketConsumer):
         try:
             data = json.loads(text_data)
 
-        except:
+        except Exception:
             return
 
         if data.get("type") == "ping":

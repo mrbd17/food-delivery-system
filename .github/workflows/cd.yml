@@ -1,0 +1,97 @@
+name: CD - Continuous Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types: ["completed"]
+    branches: 
+      "**"
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Commit SHA to deploy (defaults to the triggering CI run's commit)"
+        required: false
+        type: string  
+  
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  APP_DIR: /home/${{ github.actor }}/deployments/food-delivery-system
+  HEALTH_URL: https://localhost/api/health
+
+permissions:
+  contents: read
+
+
+jobs:
+  prepare-deployment:
+    name: Prepare Deployment Metadata
+    runs-on: ubuntu-latest
+
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    permissions:
+      contents: read
+      packages: read
+
+    outputs:
+      image_tag: ${{ steps.metadata.outputs.image_tag }}
+      short_sha: ${{ steps.metadata.outputs.short_sha }}
+      image_digest: ${{ steps.verify.outputs.digest }}
+
+    steps:
+      - name: Resolve image tag
+        id: metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SHA="${{ github.event.inputs.image_tag }}"
+          else
+            SHA="${{ github.event.workflow_run.head_sha }}"
+          fi
+
+          if [ -z "$SHA" ]; then
+            echo "::error::No commit SHA resolved"
+            exit 1
+          fi
+
+          echo "image_tag=$SHA" >> "$GITHUB_OUTPUT"
+          echo "short_sha=${SHA:0:7}" >> "$GITHUB_OUTPUT"
+ 
+      - name: Log in to Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify image exists in registry
+        id: verify
+        run: |
+          set -euo pipefail
+          DIGEST=$(docker buildx imagetools inspect \
+            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.metadata.outputs.image_tag }}" \
+            --format '{{json .Manifest.Digest}}' | tr -d '"')
+          if [ -z "$DIGEST" ]; then
+            echo "::error::Image tag not found in registry, aborting before any approval is requested"
+            exit 1
+          fi
+          echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
+  approval:
+    name: Manual Approval Gate
+    needs: prepare-deployment
+    runs-on: ubuntu-latest
+    environment:
+      name: production-approval
+    steps:
+      - name: Record approval
+        run: echo "Approved deployment of commit ${{ needs.prepare-deployment.outputs.short_sha }}"
+ 
