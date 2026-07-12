@@ -24,6 +24,7 @@ env:
 
 permissions:
   contents: read
+  
 
 jobs:
   prepare-deployment:
