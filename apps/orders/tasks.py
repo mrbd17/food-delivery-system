@@ -34,4 +34,4 @@ def send_order_confirmation_email(self, order_id):
 
         logger.info("email sent successfully")
     except Exception as exc:
-        raise self.retry(exc=exc, countdown=60)
+        raise self.retry(exc=exc, countdown=60) from exc

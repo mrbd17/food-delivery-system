@@ -51,8 +51,8 @@ class GoogleAuthService:
             logger.info(f"User login: {email}")
             return user
 
-        except User.DoesNotExist:
-            raise ValueError("User not found. Create an account first.")
+        except User.DoesNotExist as err:
+            raise ValueError("User not found. Create an account first.") from err
 
     def handle_signup(self, user_data):
 
@@ -72,7 +72,7 @@ class GoogleAuthService:
 
         except Exception as e:
             logger.error(f"Failed to create user: {e!s}")
-            raise ValueError("Failed to create user account")
+            raise ValueError("Failed to create user account") from e
 
     def authenticate(self, token, mode):
 

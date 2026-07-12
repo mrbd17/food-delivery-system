@@ -5,6 +5,7 @@ from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
+from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -27,9 +28,6 @@ User = get_user_model()
 def auth_page(request):
     get_token(request)
     return render(request, "auth/auth.html")
-
-
-from django.http import JsonResponse
 
 
 def google_callback(request):
@@ -143,7 +141,7 @@ class LoginAPIView(APIView):
 
 
 class LogoutAPIView(APIView):
-    premission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         auth_logout(request)
