@@ -98,84 +98,84 @@ jobs:
         run: echo "Approved deployment of commit ${{ needs.prepare-deployment.outputs.short_sha }}"
  
 
-  deploy-production:
-    name: Deploy to Local Production Runner
-    needs: [prepare-deployment, approval]
-    runs-on: [self-hosted, local-production]
-    environment:
-      name: production
-      url: https://localhost
-    permissions:
-      contents: read
-      packages: read
-    steps:
-      - name: Log in to Container Registry
-        uses: docker/login-action@v4
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  # deploy-production:
+  #   name: Deploy to Local Production Runner
+  #   needs: [prepare-deployment, approval]
+  #   runs-on: [self-hosted, local-production]
+  #   environment:
+  #     name: production
+  #     url: https://localhost
+  #   permissions:
+  #     contents: read
+  #     packages: read
+  #   steps:
+  #     - name: Log in to Container Registry
+  #       uses: docker/login-action@v4
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
  
-      - name: Snapshot current image reference for rollback
-        run: |
-          cd "${{ env.APP_DIR }}"
-          if [ -f .env.image ]; then
-            cp .env.image .env.image.previous
-          fi
+  #     - name: Snapshot current image reference for rollback
+  #       run: |
+  #         cd "${{ env.APP_DIR }}"
+  #         if [ -f .env.image ]; then
+  #           cp .env.image .env.image.previous
+  #         fi
  
-      - name: Pull and switch to new image
-        run: |
-          set -euo pipefail
-          cd "${{ env.APP_DIR }}"
-          echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > .env.image
-          docker compose pull web celery celery-beat
-          docker compose up -d --no-deps --wait web celery celery-beat
+  #     - name: Pull and switch to new image
+  #       run: |
+  #         set -euo pipefail
+  #         cd "${{ env.APP_DIR }}"
+  #         echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > .env.image
+  #         docker compose pull web celery celery-beat
+  #         docker compose up -d --no-deps --wait web celery celery-beat
  
-      - name: Application health check
-        run: |
-          set -e
-          for attempt in $(seq 1 10); do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.HEALTH_URL }}" || echo "000")
-            if [ "$STATUS" = "200" ]; then
-              echo "Health check passed on attempt $attempt"
-              exit 0
-            fi
-            echo "Attempt $attempt returned $STATUS, retrying in 6s..."
-            sleep 6
-          done
-          echo "::error::Health check failed after 10 attempts"
-          exit 1
+  #     - name: Application health check
+  #       run: |
+  #         set -e
+  #         for attempt in $(seq 1 10); do
+  #           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.HEALTH_URL }}" || echo "000")
+  #           if [ "$STATUS" = "200" ]; then
+  #             echo "Health check passed on attempt $attempt"
+  #             exit 0
+  #           fi
+  #           echo "Attempt $attempt returned $STATUS, retrying in 6s..."
+  #           sleep 6
+  #         done
+  #         echo "::error::Health check failed after 10 attempts"
+  #         exit 1
  
-  # ---------------------------------------------------------------------
-  # 4) ROLLBACK: only runs if deploy-production actually failed
-  # ---------------------------------------------------------------------
-  rollback:
-    name: Rollback to Previous Version
-    needs: [prepare-deployment, deploy-production]
-    if: always() && needs.deploy-production.result == 'failure'
-    runs-on: [self-hosted, local-production]
-    environment:
-      name: production
-    steps:
-      - name: Restore previous image
-        run: |
-          set -euo pipefail
-          cd "${{ env.APP_DIR }}"
-          if [ ! -f .env.image.previous ]; then
-            echo "::error::No rollback snapshot found, manual intervention required"
-            exit 1
-          fi
-          mv .env.image.previous .env.image
-          docker compose pull web celery celery-beat
-          docker compose up -d --no-deps --wait web celery celery-beat
+  # # ---------------------------------------------------------------------
+  # # 4) ROLLBACK: only runs if deploy-production actually failed
+  # # ---------------------------------------------------------------------
+  # rollback:
+  #   name: Rollback to Previous Version
+  #   needs: [prepare-deployment, deploy-production]
+  #   if: always() && needs.deploy-production.result == 'failure'
+  #   runs-on: [self-hosted, local-production]
+  #   environment:
+  #     name: production
+  #   steps:
+  #     - name: Restore previous image
+  #       run: |
+  #         set -euo pipefail
+  #         cd "${{ env.APP_DIR }}"
+  #         if [ ! -f .env.image.previous ]; then
+  #           echo "::error::No rollback snapshot found, manual intervention required"
+  #           exit 1
+  #         fi
+  #         mv .env.image.previous .env.image
+  #         docker compose pull web celery celery-beat
+  #         docker compose up -d --no-deps --wait web celery celery-beat
  
-      - name: Verify rollback health
-        run: |
-          sleep 10
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.HEALTH_URL }}" || echo "000")
-          if [ "$STATUS" != "200" ]; then
-            echo "::error::Rollback verification failed, this needs immediate human attention"
-            exit 1
-          fi
-          echo "Rollback verified, service restored on previous image"
+  #     - name: Verify rollback health
+  #       run: |
+  #         sleep 10
+  #         STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.HEALTH_URL }}" || echo "000")
+  #         if [ "$STATUS" != "200" ]; then
+  #           echo "::error::Rollback verification failed, this needs immediate human attention"
+  #           exit 1
+  #         fi
+  #         echo "Rollback verified, service restored on previous image"
  
