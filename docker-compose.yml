@@ -40,12 +40,12 @@ services:
         daphne -b 0.0.0.0 -p 8000 config.asgi:application "
     ports:
       - "8000:8000"
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]  
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
-     # start_period: 5s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost/api/health/"]  
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     environment:
       - PYTHONUNBUFFERED=1
     env_file:
