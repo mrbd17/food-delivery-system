@@ -29,12 +29,12 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: requirements/dev.txt
+          cache-dependency-path: requirements/production.txt
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements/dev.txt
+          pip install -r requirements/production.txt
 
       - name: Run Ruff Linter
         run: ruff check .
@@ -82,12 +82,12 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: requirements/dev.txt
+          cache-dependency-path: requirements/production.txt
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements/dev.txt
+          pip install -r requirements/production.txt
 
       - name: Run Database Migrations
         env:
@@ -130,12 +130,12 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: requirements/dev.txt
+          cache-dependency-path: requirements/production.txt
 
       - name: Install Security Tools
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements/dev.txt
+          pip install -r requirements/production.txt
           pip install bandit safety pip-audit
 
       - name: Run Bandit Security Scanner
