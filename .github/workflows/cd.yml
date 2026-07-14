@@ -101,7 +101,7 @@ jobs:
   deploy-production:
     name: Deploy to Local Production Runner
     needs: [prepare-deployment, approval]
-    runs-on: [self-hosted, local-production]
+    runs-on: [self-hosted, linux]
     environment:
       name: production
       url: https://localhost
