@@ -153,7 +153,7 @@ jobs:
     name: Rollback to Previous Version
     needs: [prepare-deployment, deploy-production]
     if: always() && needs.deploy-production.result == 'failure'
-    runs-on: [self-hosted, local-production]
+    runs-on: [self-hosted, linux]
     environment:
       name: production
     steps:
