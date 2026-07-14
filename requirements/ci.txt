@@ -1,19 +1,29 @@
-# ============================================================================
-# CI/CD & PRODUCTION BUILD REQUIREMENTS
-# ============================================================================
-# Minimal set for Docker builds and CI pipelines
-# Does NOT include development tools
-# ============================================================================
 
--r base.txt
-
-# For running tests in CI only
+# ============================================================================
+# CI TOOLING REQUIREMENTS (FoodDeliverySystem)
+# ============================================================================
+# Tools invoked directly by .github/workflows/ci.yml
+# Install alongside production.txt in CI jobs:
+#   pip install -r requirements/production.txt -r requirements/ci.txt
+# ============================================================================
+ 
+# lint job: `ruff check .` / `ruff format .`
+ruff>=0.15.20
+ 
+# test job: `pytest --cov=fooddelivery --cov-report=xml ...`
 pytest>=7.3,<8.0
+pytest-cov>=4.0,<5.0
+ 
+# Required for pytest to correctly load Django settings/models given
+# DJANGO_SETTINGS_MODULE is only set as an env var in the workflow.
 pytest-django>=4.5,<5.0
-
-# Security scanning in CI
+ 
+# security job: `bandit -r fooddelivery/ -f json ...`
+bandit>=1.8,<2.0
+ 
+# security job: `pip-audit --skip-editable`
 pip-audit>=2.4,<3.0
+ 
+# security job: currently installed but never invoked by any step - see note
 safety>=2.3,<3.0
-
-# Coverage reporting
-coverage>=7.0,<8.0
+ 
