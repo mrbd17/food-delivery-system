@@ -12,15 +12,13 @@ pytest>=7.3,<8.0
 pytest-django>=4.5,<5.0
 pytest-cov>=4.0,<5.0
 pytest-asyncio>=0.21,<1.0
-factory-boy>=3.2,<4.0
 faker>=15.0,<20.0
-django-redis>=5.4,<6.0
 python-json-logger==3.3.0
 
 # Code Quality & Linting
 ruff==0.15.20
 black>=23.0,<24.0
-flake8>=6.0,<7.0
+flake8>=6.0,<7.0@
 flake8-isort>=6.0,<7.0
 isort>=5.12,<6.0
 pylint>=2.16,<3.0
@@ -32,6 +30,7 @@ ipython>=8.0,<9.0
 ipdb>=0.13,<1.0
 django-debug-toolbar>=3.8,<4.0
 pdbpp>=0.10,<1.0
+django-silk>=5.0,<6.0
 
 # Documentation
 Sphinx>=5.3,<7.0

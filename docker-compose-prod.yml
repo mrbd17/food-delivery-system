@@ -7,8 +7,8 @@ services:
       - .env.docker
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    expose:
+      - 5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]  # استخدم $$
       interval: 10s
@@ -20,8 +20,8 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis
-    ports:
-      - "6379:6379"
+    expose:
+      - 6379
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -31,16 +31,15 @@ services:
       - fooddelivery-network
     
   web:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: ${APP_IMAGE}
     container_name: fooddelivery-app  
     command: |
-      sh -c " daphne -b 0.0.0.0 -p 8000 config.asgi:application "
+      sh -c "python manage.py collectstatic --noinput && \
+        daphne -b 0.0.0.0 -p 8000 config.asgi:application "
     expose:
       - 8000
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]  
+      test: ["CMD", "curl", "-f", "https://localhost/api/health/"]  
       interval: 10s
       timeout: 5s
       retries: 5
@@ -62,7 +61,7 @@ services:
     
     
   celery:
-    build: .
+    image: ${APP_IMAGE}
     container_name: celery
     command: celery -A config worker -l info -P solo -Q emails 
     environment:
@@ -78,7 +77,7 @@ services:
       - fooddelivery-network
 
   celery-beat:
-    build: .d
+    image: ${APP_IMAGE}
     container_name: celery-beat
     command: celery -A config beat -l info  
     environment:
@@ -98,9 +97,9 @@ services:
     container_name: nginx
     env_file:
       - .env.docker
-    ports:
-      - "80:80"
-      - "443:443"
+    # ports:
+    #   - "80:80"
+    #   - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./staticfiles:/app/staticfiles:ro
@@ -109,9 +108,7 @@ services:
       - ./ssl:/etc/nginx/ssl:ro
     
     depends_on:
-      - web:
-          condition: service_healthy
-            
+      - web
     networks:
       - fooddelivery-network
 

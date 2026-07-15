@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir \
     --default-timeout=3000 \
     --retries 20 \
-    -r requirements/dev.txt
+    -r requirements/production.txt
 
 
 COPY manage.py /app/
