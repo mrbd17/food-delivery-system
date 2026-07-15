@@ -20,7 +20,7 @@ concurrency:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  APP_DIR: /home/${{ github.actor }}/deployments/food-delivery-system
+  APP_DIR: /home/mahmoud_rabia/deployments/food-delivery-system
   HEALTH_URL: https://localhost/api/health
 
 permissions:
