@@ -129,8 +129,8 @@ jobs:
           set -euo pipefail
           cd "${{ env.APP_DIR }}"
           echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > .env.image
-          docker compose \--env-file .env.image \-f docker-compose-prod.yml \pull web celery celery-beat
-          docker compose \--env-file .env.image \-f docker-compose-prod.yml \up -d --no-deps --wait web celery celery-beat
+          docker compose --env-file .env.image -f docker-compose-prod.yml pull web celery celery-beat
+          docker compose --env-file .env.image -f docker-compose-prod.yml up -d --no-deps --wait web celery celery-beat
  
       - name: Application health check
         run: |
