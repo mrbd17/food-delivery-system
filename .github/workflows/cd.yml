@@ -128,9 +128,9 @@ jobs:
         run: |
           set -euo pipefail
           cd "${{ env.APP_DIR }}"
-          echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > /home/mahmoud_rabia/secrets/.env.image
+          echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > /home/mahmoud_rabia/deployments/secrets/.env.image
           docker compose \
-              --env-file /home/mahmoud_rabia/secrets/.env.image \
+              --env-file /home/mahmoud_rabia/deployments/secrets/.env.image \
               -f docker-compose-prod.yml \
               pull web celery celery-beat 
 
