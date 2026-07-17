@@ -133,9 +133,9 @@ jobs:
               --env-file /home/mahmoud_rabia/secrets/.env.image \
               -f docker-compose-prod.yml \
               pull web celery celery-beat 
-              
+
           docker compose \
-            --env-file /home/mahmoud_rabia/secrets/.env.image \
+            --env-file /home/mahmoud_rabia/deployments/secrets/.env.image \
             -f docker-compose-prod.yml \
             up -d --no-deps --wait web celery celery-beat
   
