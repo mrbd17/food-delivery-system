@@ -22,7 +22,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
   APP_DIR: /home/mahmoud_rabia/deployments/food-delivery-system
   HEALTH_URL: https://localhost/api/health
-
+  SECRETS_DIR: /home/mahmoud_rabia/deployments/secrets
 permissions:
   contents: read
 
@@ -119,7 +119,7 @@ jobs:
  
       - name: Snapshot current image reference for rollback
         run: |
-          cd "${{ env.APP_DIR }}"
+          cd "${{ env.SECRETS_DIR }}"
           if [ -f .env.image ]; then
             cp .env.image .env.image.previous
           fi
@@ -168,14 +168,21 @@ jobs:
       - name: Restore previous image
         run: |
           set -euo pipefail
-          cd "${{ env.APP_DIR }}"
+          cd "${{ env.SECRETS_DIR }}"
           if [ ! -f .env.image.previous ]; then
             echo "::error::No rollback snapshot found, manual intervention required"
             exit 1
           fi
           mv .env.image.previous .env.image
-          docker compose pull web celery celery-beat
-          docker compose up -d --no-deps --wait web celery celery-beat
+          docker compose \
+              --env-file /home/mahmoud_rabia/deployments/secrets/.env.image \
+              -f docker-compose-prod.yml \
+              pull web celery celery-beat 
+
+          docker compose \
+            --env-file /home/mahmoud_rabia/deployments/secrets/.env.image \
+            -f docker-compose-prod.yml \
+            up -d --no-deps --wait web celery celery-beat
  
       - name: Verify rollback health
         run: |
