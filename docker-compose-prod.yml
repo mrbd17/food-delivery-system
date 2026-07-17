@@ -4,7 +4,7 @@ services:
     image: postgres:15-alpine
     container_name: db
     env_file:
-      - /home/mahmoud_rabia/secrets/.env.docker
+      - /home/mahmoud_rabia/deployments/secrets/.env.docker
     volumes:
       - postgres_data:/var/lib/postgresql/data
     expose:
@@ -47,7 +47,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     env_file:
-      - /home/mahmoud_rabia/secrets/.env.docker
+      - /home/mahmoud_rabia/deployments/secrets/.env.docker
     volumes:
       - .:/app
       - ./media:/app/media
@@ -67,7 +67,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     env_file:
-      - /home/mahmoud_rabia/secrets/.env.docker
+      - /home/mahmoud_rabia/deployments/secrets/.env.docker
     depends_on:
       redis:
         condition: service_healthy  
@@ -83,7 +83,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     env_file:
-      - /home/mahmoud_rabia/secrets/.env.docker
+      - /home/mahmoud_rabia/deployments/secrets/.env.docker
     depends_on:
       redis:
         condition: service_healthy 
@@ -96,7 +96,7 @@ services:
     image: nginx:1.30-alpine
     container_name: nginx
     env_file:
-      - /home/mahmoud_rabia/secrets/.env.docker
+      - /home/mahmoud_rabia/deployments/secrets/.env.docker
     ports:
       - "80:80"
       - "443:443"
