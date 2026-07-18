@@ -21,7 +21,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   APP_DIR: /home/mahmoud_rabia/deployments/food-delivery-system
-  HEALTH_URL: http://localhost:8000/api/health
+  HEALTH_URL: https://localhost/api/health/
   SECRETS_DIR: /home/mahmoud_rabia/deployments/secrets
 permissions:
   contents: read

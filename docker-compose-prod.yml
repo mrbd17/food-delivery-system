@@ -50,7 +50,6 @@ services:
     env_file:
       - /home/mahmoud_rabia/deployments/secrets/.env.docker
     volumes:
-      - .:/app
       - ./media:/app/media
     depends_on:
       db:
