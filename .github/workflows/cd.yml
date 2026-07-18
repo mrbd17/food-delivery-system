@@ -123,9 +123,11 @@ jobs:
           if [ -f .env.image ]; then
             cp .env.image .env.image.previous
           fi
+
+
       - name: Ensure infrastructure services are running
         run: |
-          set -euo pipfail
+          set -euo pipefail
           cd "${{ env.APP_DIR }}"
           docker compose \
             -f docker-compose-prod.yml \
@@ -133,7 +135,7 @@ jobs:
  
       - name: Pull and switch to new image
         run: |
-          set -euo pipfail
+          set -euo pipefail
           cd "${{ env.APP_DIR }}"
           echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > .env.image
           docker compose \
