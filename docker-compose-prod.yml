@@ -33,14 +33,14 @@ services:
     
   web:
     image: ${APP_IMAGE}
-    container_name: fooddelivery-app  
+    container_name: backend
     command: |
       sh -c "python manage.py collectstatic --noinput && \
         daphne -b 0.0.0.0 -p 8000 config.asgi:application "
     expose:
       - 8000
     healthcheck:
-      test: ["CMD", "curl", "-f", "https://localhost/api/health/"]  
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]  
       interval: 10s
       timeout: 5s
       retries: 5
@@ -109,7 +109,9 @@ services:
       - ./ssl:/etc/nginx/ssl:ro
     
     depends_on:
-      - web
+      web:
+        condition: service_healthy
+
     networks:
       - fooddelivery-network
 
