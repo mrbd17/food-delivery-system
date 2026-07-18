@@ -128,13 +128,12 @@ jobs:
           set -euo pipfail
           cd "${{ env.APP_DIR }}"
           docker compose \
-            --env-file .env.image \
             -f docker-compose-prod.yml \
-            up -d --wait  postgres redis
+            up -d --wait postgres redis
  
       - name: Pull and switch to new image
         run: |
-          set -euo pipefail
+          set -euo pipfail
           cd "${{ env.APP_DIR }}"
           echo "APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-deployment.outputs.image_tag }}" > .env.image
           docker compose \
