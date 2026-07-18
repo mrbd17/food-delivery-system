@@ -123,6 +123,14 @@ jobs:
           if [ -f .env.image ]; then
             cp .env.image .env.image.previous
           fi
+      - name: Ensure infrastructure services are running
+        run: |
+          set -euo pipfail
+          cd "${{ env.APP_DIR }}"
+          docker compose \
+            --env-file .env.image \
+            -f docker-compose-prod.yml \
+            up -d --wait  postgres redis
  
       - name: Pull and switch to new image
         run: |
@@ -138,6 +146,10 @@ jobs:
             --env-file .env.image \
             -f docker-compose-prod.yml \
             up -d --no-deps --wait web celery celery-beat
+
+          docker compose \
+            -f docker-compose-prod.yml \
+            up -d --wait nginx
   
       - name: Application health check
         run: |
