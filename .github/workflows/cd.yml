@@ -133,7 +133,7 @@ jobs:
           docker compose \
             --env-file .env.image \
             -f docker-compose-prod.yml \
-            up -d --wait postgres redis
+            up -d --wait db redis
  
       - name: Pull and switch to new image
         run: |
