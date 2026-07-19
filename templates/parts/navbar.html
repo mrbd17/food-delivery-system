@@ -1,0 +1,116 @@
+{% load static %}
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    
+      <section class="nav-right">
+
+    {% if user.is_authenticated %}
+
+    <!-- ============ PROFILE DROPDOWN (LOGGED IN) ============ -->
+    <div class="profile-container">
+      {% if user.profile.avatar %}    
+        <img src="{% static 'images/avatar.svg' %}" alt="avatar" class="profile-btn" id="profileBtn">
+      {% else %}
+         <img src="{% static 'images/picture.jpg' %}" class="profile-btn" id="profileBtn">
+      {% endif %}
+      <div class="profile-dropdown" id="profileDropdown">
+
+        <div class="profile-top">
+          <img src="{% static 'images/avatar.svg' %}" class="profile-big">
+          <div class="profile-info">
+            <strong>{{ user.username }}</strong>
+            <p>{{ user.email }}</p>
+          </div>
+        </div>
+
+        <a href="{% url "account_shell" %}" class="manage-btn">Manage your account</a>
+
+        <div class="profile-footer">
+            <button id="logout-btn" class="logout-btn">Log out</button>
+        </div>
+
+      </div>
+    </div>
+
+    {% else %}
+
+    <!-- ============ AUTH BUTTONS (GUEST) ============ -->
+    <div class="auth-buttons">
+      <a href="{% url 'auth' %}?mode=login" class="login-btn">Log in</a>
+      <a href="{% url 'auth' %}?mode=signup" class="signup-btn">Sign Up</a>
+    </div>
+
+    {% endif %}
+
+  </section>
+    </section>
+
+    <div class="nav-center">
+      <div class="nav-item" data-menu="eat">Eat</div>
+      <div class="nav-item" data-menu="learn">Learn</div>
+      <div class="nav-item" data-menu="family">Family</div>
+    </div>
+
+    <div class="nav-right">
+      <button class="cart-btn">🛒 <span id="cartCount">0</span></button>
+    </div>
+  </nav>
+
+  <div class="cart" id="cart">
+    <div id="cartItems"></div>
+    <a href="{% url 'checkout_page' %}" id="checkoutBtn">Proceed to buy</a>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Mega Menus -->
+  <div class="mega-menu" id="eat">
+    <div class="column">
+      <h3>Order</h3>
+      <a href="#">Delivery</a>
+      <a href="#">Pickup</a>
+      <a href="#">Dine-In</a>
+    </div>
+    <div class="column">
+      <h3><a href="{% url 'menu' %}" >Menu</a></h3>
+      <a href="#">Full Menu</a>
+      <a href="#">Burgers</a>
+      <a href="#">Chicken</a>
+      <a href="#">Sides</a>
+      <a href="#">Drinks</a>
+    </div>
+    <div class="column">
+      <h3>Offers</h3>
+      <a href="#">Combo Deals</a>
+      <a href="#">Limited Time</a>
+    </div>
+  </div>
+
+  <div class="mega-menu" id="learn">
+    <div class="column">
+      <h3>About</h3>
+      <a href="#">Our Story</a>
+      <a href="#">Our Team</a>
+      <a href="#">Our Kitchens</a>
+    </div>
+    <div class="column">
+      <h3>Food</h3>
+      <a href="#">Ingredients</a>
+      <a href="#">Nutrition</a>
+      <a href="#">Allergens</a>
+    </div>
+  </div>
+
+  <div class="mega-menu" id="family">
+    <div class="column">
+      <h3>Kids</h3>
+      <a href="#">Kids Meals</a>
+      <a href="#">Toys</a>
+      <a href="#">Birthdays</a>
+    </div>
+  </div>
+
+</body>
+
